@@ -1,0 +1,3429 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* MARBOU7A — Stargate space palette
+       bg #0F172A • primary #3B82F6 • cyan #22D3EE • gold #FBBF24 • text #E2E8F0 */
+    --background: 222 47% 11%; /* #0F172A spatial deep */
+    --foreground: 214 32% 91%; /* #E2E8F0 soft white */
+
+    --card: 222 47% 14%; /* slightly raised surface */
+    --card-foreground: 214 32% 91%;
+
+    --popover: 222 47% 13%;
+    --popover-foreground: 214 32% 91%;
+
+    /* Primary — electric blue #3B82F6 */
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+    --primary-glow: 217 91% 65%;
+
+    --secondary: 222 40% 18%;
+    --secondary-foreground: 214 32% 91%;
+
+    --muted: 222 35% 20%;
+    --muted-foreground: 215 20% 70%;
+
+    /* Accent — holographic cyan #22D3EE */
+    --accent: 187 85% 53%;
+    --accent-foreground: 222 47% 11%;
+
+    /* Reward — futuristic gold #FBBF24 */
+    --gold: 43 96% 56%;
+    --gold-foreground: 222 47% 11%;
+
+    /* Cyan — same holographic accent */
+    --cyan: 187 85% 53%;
+    --cyan-foreground: 222 47% 11%;
+
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 214 32% 95%;
+
+    --quiz-correct: 158 70% 48%;
+    --quiz-correct-surface: 158 60% 22%;
+    --quiz-incorrect: 0 75% 60%;
+    --quiz-incorrect-surface: 0 65% 28%;
+    --quiz-speed-bonus: 43 96% 56%;
+    --portal-reveal: 222 43% 16%;
+
+    --border: 222 35% 24%;
+    --input: 222 35% 22%;
+    --ring: 217 91% 60%;
+
+    --radius: 1.25rem;
+
+    /* Gradients — premium space */
+    --gradient-primary: linear-gradient(135deg, hsl(217 91% 60%), hsl(187 85% 53%));
+    --gradient-violet: linear-gradient(135deg, hsl(217 91% 60%), hsl(187 85% 53%));
+    --gradient-gold: linear-gradient(135deg, hsl(43 96% 60%), hsl(38 95% 50%) 50%, hsl(48 100% 68%));
+    --gradient-cyan: linear-gradient(135deg, hsl(187 85% 53%), hsl(217 91% 60%));
+    --gradient-hero:
+      radial-gradient(ellipse 60% 40% at 15% 0%, hsl(217 91% 60% / 0.28), transparent 60%),
+      radial-gradient(ellipse 50% 40% at 85% 10%, hsl(187 85% 53% / 0.22), transparent 65%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, hsl(43 96% 56% / 0.1), transparent 70%),
+      linear-gradient(180deg, hsl(222 47% 11%), hsl(222 50% 9%));
+    --gradient-card: linear-gradient(180deg, hsl(222 47% 14% / 0.85), hsl(222 47% 12% / 0.75));
+    --gradient-border: linear-gradient(
+      135deg,
+      hsl(217 91% 60% / 0.65),
+      hsl(187 85% 53% / 0.45) 50%,
+      hsl(43 96% 56% / 0.55)
+    );
+
+    /* Shadows & glows */
+    --shadow-glow: 0 12px 40px -8px hsl(217 91% 60% / 0.55), 0 0 0 1px hsl(187 85% 53% / 0.25);
+    --shadow-glow-strong: 0 18px 50px -8px hsl(217 91% 60% / 0.7), 0 0 30px hsl(187 85% 53% / 0.5);
+    --shadow-gold: 0 12px 30px -8px hsl(43 96% 56% / 0.55);
+    --shadow-violet: 0 12px 30px -8px hsl(187 85% 53% / 0.45);
+    --shadow-card: 0 20px 50px -20px hsl(222 80% 4% / 0.7), 0 4px 12px -4px hsl(222 80% 4% / 0.4);
+    --shadow-soft: 0 8px 24px -8px hsl(222 80% 4% / 0.5);
+
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    scroll-behavior: auto;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    /* `clip` masks overflow WITHOUT creating a scroll container, so html/body
+       don't become two nested viewports (which caused the double-gesture scroll). */
+    overflow-x: clip;
+    -webkit-overflow-scrolling: touch;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    background: var(--gradient-hero);
+    background-attachment: fixed;
+    font-family: "Inter", system-ui, sans-serif;
+    overflow-x: clip;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: auto;
+    /* Safe-area insets are applied per-component where needed; keeping
+       them on <body> would inset the whole page and leave a visible strip
+       on the right (and left) where the fixed body gradient shows through. */
+
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+
+
+  /* Prevent images/videos/svgs from overflowing their container on small phones */
+  img, svg, video, canvas {
+    max-width: 100%;
+  }
+  /* Keep tap targets at least 44px for accessibility */
+  button, [role="button"], a {
+    -webkit-tap-highlight-color: transparent;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: "Space Grotesk", "Inter", sans-serif;
+    @apply tracking-tight;
+  }
+  /* Utility: respect safe-area at bottom (iPhone home indicator) */
+  .safe-bottom {
+    padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 0.5rem);
+  }
+  .safe-top {
+    padding-top: calc(env(safe-area-inset-top, 0px) + 0.5rem);
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply relative rounded-3xl border border-border/60 bg-card/90 backdrop-blur-xl;
+    box-shadow: var(--shadow-card);
+  }
+  .glow-border {
+    position: relative;
+  }
+  .glow-border::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-border);
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.7;
+  }
+  .text-gradient {
+    background: linear-gradient(135deg, hsl(217 96% 68%), hsl(195 94% 62%), hsl(168 92% 56%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
+  }
+
+  .text-violet-gradient {
+    background: var(--gradient-violet);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .text-gold-gradient {
+    background: var(--gradient-gold);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+
+  .text-wordmark-gradient {
+    background: linear-gradient(
+      180deg,
+      hsl(48 100% 78%) 0%,
+      hsl(45 95% 62%) 18%,
+      hsl(43 90% 50%) 38%,
+      hsl(38 88% 42%) 55%,
+      hsl(32 82% 34%) 74%,
+      hsl(28 75% 26%) 100%
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* XP / progression bar */
+  .xp-bar {
+    @apply relative h-3 rounded-full overflow-hidden;
+    background: hsl(222 40% 18%);
+    box-shadow: inset 0 1px 2px hsl(222 80% 4% / 0.5);
+  }
+  .xp-bar > .xp-fill {
+    @apply absolute inset-y-0 left-0 rounded-full;
+    background: var(--gradient-primary);
+    box-shadow: 0 0 12px hsl(188 100% 55% / 0.7);
+  }
+  .xp-bar > .xp-fill::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent, hsl(0 0% 100% / 0.5), transparent);
+    background-size: 200% 100%;
+    animation: shimmer 2.5s linear infinite;
+  }
+
+  /* Reward / level tile */
+  .level-tile {
+    @apply relative grid place-items-center rounded-2xl font-black text-sm transition-transform;
+    aspect-ratio: 1 / 1;
+  }
+  .level-tile.locked {
+    background: hsl(220 50% 94%);
+    color: hsl(222 20% 70%);
+    border: 1px solid hsl(220 60% 88%);
+  }
+  .level-tile.current {
+    background: var(--gradient-primary);
+    color: hsl(0 0% 100%);
+    box-shadow: var(--shadow-glow);
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+  .level-tile.unlocked {
+    background: var(--gradient-cyan);
+    color: hsl(222 60% 14%);
+    box-shadow: 0 8px 20px -6px hsl(188 100% 50% / 0.45);
+  }
+
+  /* Gold frame for premium reward elements */
+  .gold-frame {
+    border: 1px solid hsl(var(--gold) / 0.5);
+    box-shadow:
+      0 0 0 1px hsl(var(--gold) / 0.15) inset,
+      var(--shadow-gold);
+    background: linear-gradient(180deg, hsl(48 100% 96%), hsl(44 100% 92%));
+  }
+
+
+  /* Floating coin */
+  .floating-coin {
+    @apply inline-grid place-items-center rounded-full text-gold-foreground font-black;
+    background: var(--gradient-gold);
+    box-shadow:
+      var(--shadow-gold),
+      inset 0 -2px 4px hsl(35 80% 35% / 0.3),
+      inset 0 2px 4px hsl(48 100% 90% / 0.6);
+  }
+
+  /* Spotlight glow used by sections */
+  .spotlight {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 35% 50% at 50% 0%, hsl(188 100% 60% / 0.18), transparent 65%),
+      radial-gradient(ellipse 25% 80% at 50% 100%, hsl(248 100% 70% / 0.15), transparent 70%);
+  }
+
+
+
+
+  .portal-rune {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+  }
+  .portal-rune img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    opacity: 0.98;
+    transform: scale(1.18);
+    /* engraved Stargate glyph: crisp dark cut with a pale stone bevel */
+    filter: brightness(0) saturate(100%) invert(7%) sepia(28%) saturate(1200%) hue-rotate(182deg)
+      drop-shadow(0 1px 0 hsl(44 65% 90% / 0.9)) drop-shadow(0 0 2px hsl(220 70% 8% / 0.75));
+    transition:
+      filter 0.3s ease,
+      opacity 0.3s ease,
+      transform 0.3s ease;
+  }
+  .portal-symbol.is-selected .portal-rune img {
+    opacity: 1;
+    transform: scale(1.24);
+    filter: brightness(0) saturate(100%) invert(70%) sepia(80%) saturate(700%) hue-rotate(2deg)
+      drop-shadow(0 0 8px hsl(48 100% 70%)) drop-shadow(0 0 16px hsl(44 100% 60% / 0.85));
+  }
+
+  .portal-stone {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+  }
+  .portal-stone-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px hsl(220 60% 25% / 0.35)) drop-shadow(0 0 30px hsl(188 100% 55% / 0.35));
+    transition:
+      filter 0.6s ease,
+      transform 0.6s ease;
+  }
+  .portal-stone.is-opening .portal-stone-img {
+    filter: drop-shadow(0 0 60px hsl(188 100% 60% / 0.9)) drop-shadow(0 0 120px hsl(220 100% 65% / 0.7))
+      brightness(1.15);
+    transform: scale(1.02);
+  }
+  .portal-stone.is-open .portal-stone-img {
+    filter: drop-shadow(0 0 40px hsl(188 100% 60% / 0.7)) drop-shadow(0 0 80px hsl(44 100% 60% / 0.45));
+  }
+  /* Inner energy core — soft radial glow, no spiral */
+  .portal-stone-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 72%;
+    height: 72%;
+    transform: translate(-50%, -50%);
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(200 100% 65% / 0.85) 0%,
+      hsl(210 100% 55% / 0.5) 35%,
+      hsl(220 100% 45% / 0.2) 60%,
+      transparent 78%
+    );
+    -webkit-mask: radial-gradient(circle at 50% 50%, #000 72%, transparent 96%);
+    mask: radial-gradient(circle at 50% 50%, #000 72%, transparent 96%);
+    animation: portal-breathe 4s ease-in-out infinite;
+    filter: drop-shadow(0 0 30px hsl(200 100% 60% / 0.7));
+  }
+  @keyframes portal-breathe {
+    0%,
+    100% {
+      transform: translate(-50%, -50%) scale(0.97);
+      opacity: 0.85;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.03);
+      opacity: 1;
+    }
+  }
+  .portal-stone.is-opening .portal-stone-glow {
+    animation: portal-breathe 1.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 48px hsl(200 100% 70% / 0.9));
+  }
+  .portal-stone.is-open .portal-stone-glow {
+    animation: portal-breathe 2.2s ease-in-out infinite;
+    filter: drop-shadow(0 0 56px hsl(200 100% 70% / 0.95));
+  }
+
+  /* ----- Ambient "living portal" idle animations (subtle, only when idle) ----- */
+  /* Outer breathing halo behind the ring */
+  .portal-stone::before {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 0;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(200 100% 60% / 0.22) 0%,
+      hsl(220 90% 55% / 0.12) 40%,
+      transparent 70%
+    );
+    filter: blur(14px);
+    animation: portal-halo-breathe 7s ease-in-out infinite;
+  }
+  @keyframes portal-halo-breathe {
+    0%, 100% { transform: scale(0.96); opacity: 0.55; }
+    50%      { transform: scale(1.04); opacity: 0.95; }
+  }
+
+  /* Slow drifting mist / vapor around the ring */
+  .portal-stone::after {
+    content: "";
+    position: absolute;
+    inset: -4%;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 1;
+    background:
+      radial-gradient(ellipse 55% 30% at 30% 40%, hsl(200 60% 80% / 0.10), transparent 70%),
+      radial-gradient(ellipse 50% 35% at 70% 60%, hsl(220 70% 75% / 0.08), transparent 70%),
+      radial-gradient(ellipse 40% 25% at 50% 30%, hsl(190 80% 85% / 0.09), transparent 70%);
+    -webkit-mask: radial-gradient(circle at 50% 50%, transparent 46%, #000 60%, #000 82%, transparent 98%);
+            mask: radial-gradient(circle at 50% 50%, transparent 46%, #000 60%, #000 82%, transparent 98%);
+    filter: blur(6px);
+    animation: portal-mist-drift 14s ease-in-out infinite;
+    opacity: 0.85;
+  }
+  @keyframes portal-mist-drift {
+    0%   { transform: rotate(0deg)   translate3d(0, 0, 0); }
+    50%  { transform: rotate(180deg) translate3d(1%, -1%, 0); }
+    100% { transform: rotate(360deg) translate3d(0, 0, 0); }
+  }
+
+  /* Pause ambient effects during dramatic sequences */
+  .portal-stone.is-opening::before,
+  .portal-stone.is-open::before,
+  .portal-stone.is-opening::after,
+  .portal-stone.is-open::after {
+    animation-play-state: paused;
+    opacity: 0;
+  }
+
+  /* Category chip icons — playful idle bob + glow pulse */
+  .cat-icon {
+    display: inline-block;
+    transform-origin: center;
+    animation: cat-icon-bob 2.8s ease-in-out infinite;
+    filter: drop-shadow(0 0 0 transparent);
+  }
+  @keyframes cat-icon-bob {
+    0%, 100% { transform: translateY(0) rotate(0deg) scale(1); filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+    25%      { transform: translateY(-2px) rotate(-6deg) scale(1.08); }
+    50%      { transform: translateY(-3px) rotate(0deg) scale(1.12); filter: drop-shadow(0 0 6px rgba(255,255,255,0.55)); }
+    75%      { transform: translateY(-2px) rotate(6deg) scale(1.08); }
+  }
+  .category-chip:hover .cat-icon {
+    animation-duration: 0.9s;
+  }
+
+  /* Desktop-only: very subtle extra aura behind the portal to anchor it in the scene */
+  @media (min-width: 1024px) {
+    .portal-stone::before {
+      inset: -14%;
+      background: radial-gradient(
+        circle at 50% 50%,
+        hsl(200 100% 65% / 0.28) 0%,
+        hsl(220 90% 55% / 0.16) 38%,
+        hsl(210 80% 50% / 0.08) 60%,
+        transparent 75%
+      );
+      filter: blur(22px);
+    }
+  }
+
+  /* Idle chevrons — very subtle glow breathe (only when NOT lit / dramatic) */
+  .portal-chevron:not(.is-lit) .portal-chevron-glow,
+  .sg-chevron:not(.is-locked):not(.is-revealing) .sg-chevron-top-lit {
+    animation: portal-chevron-idle 5.5s ease-in-out infinite;
+  }
+  @keyframes portal-chevron-idle {
+    0%, 100% { opacity: 0.35; filter: drop-shadow(0 0 3px hsl(200 100% 70% / 0.35)); }
+    50%      { opacity: 0.75; filter: drop-shadow(0 0 8px hsl(200 100% 75% / 0.7)); }
+  }
+
+
+  /* Rotating dial — wraps stargate img + symbols so they turn together */
+  .portal-dial {
+    position: absolute;
+    inset: 0;
+    transform-origin: 50% 50%;
+    transition: transform 2.4s cubic-bezier(0.22, 0.9, 0.25, 1);
+    will-change: transform;
+  }
+  .portal-dial.is-dialing {
+    transition: transform 3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  /* Continuous rotation while the portal is opening — short transition smooths each step */
+  .portal-dial.is-mechanical {
+    transition: transform 30ms linear;
+  }
+
+  /* Red / orange military alert flash during the opening sequence */
+  .portal-alarm {
+    position: absolute;
+    inset: -10%;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 5;
+    mix-blend-mode: screen;
+    filter: blur(8px);
+    animation: portal-alarm-flash 0.7s ease-in-out infinite;
+  }
+  @keyframes portal-alarm-flash {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: scale(0.94);
+      background: radial-gradient(
+        circle at center,
+        hsl(0 100% 55% / 0.65) 0%,
+        hsl(0 100% 50% / 0.32) 35%,
+        transparent 72%
+      );
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08);
+      background: radial-gradient(
+        circle at center,
+        hsl(28 100% 60% / 0.75) 0%,
+        hsl(18 100% 55% / 0.4) 35%,
+        transparent 72%
+      );
+    }
+  }
+
+  /* Anchored Stargate chevrons — stay in place, only a golden light pulses on each */
+  .portal-chevron {
+    --rot: 0deg;
+    position: absolute;
+    width: 13%;
+    aspect-ratio: 1 / 1;
+    pointer-events: none;
+    z-index: 7;
+    transform: translate(-50%, -50%) rotate(var(--rot));
+  }
+  .portal-chevron-glow {
+    position: absolute;
+    inset: -42% -24% -22%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+  .portal-chevron-glow img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    mix-blend-mode: screen;
+    pointer-events: none;
+    user-select: none;
+  }
+  .portal-chevron.is-lit .portal-chevron-glow {
+    animation: chevron-glow 2.6s ease-in-out both infinite;
+  }
+  @keyframes chevron-glow {
+    0%,
+    100% {
+      opacity: 0.65;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  /* Re-lighting one by one during the smoke stage */
+  .portal-chevron.is-relighting .portal-chevron-glow {
+    animation: chevron-relight 0.75s ease-out both;
+  }
+  @keyframes chevron-relight {
+    0% {
+      opacity: 0;
+      filter: brightness(0.4);
+    }
+    60% {
+      opacity: 1;
+      filter: brightness(2.2);
+    }
+    100% {
+      opacity: 0.85;
+      filter: brightness(1);
+    }
+  }
+
+  /* ===========================================================
+     SG-1 Stargate chevrons — full-canvas overlay assets rotated
+     to each of the 9 chevron slots. The unlit front piece slides
+     outward during locking, then the lit front piece fades in
+     with an orange emissive pulse. */
+  .sg-chevron { will-change: transform; }
+  .sg-chevron-bottom,
+  .sg-chevron-top,
+  .sg-chevron-top-lit {
+    transform-origin: 50% 50%;
+  }
+  .sg-chevron-top-lit {
+    opacity: 0;
+    filter: brightness(0.7) saturate(1.2);
+    mix-blend-mode: screen;
+  }
+
+  /* Energy pulse ring at moment of lock — sits at the top-chevron slot
+     in the un-rotated frame; rotates with its parent. */
+  .sg-chevron-pulse-ring {
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    width: 12%;
+    height: 12%;
+    border-radius: 9999px;
+    transform: translate(-50%, -50%) scale(0.4);
+    background: radial-gradient(circle, hsl(22 100% 60% / 0.9) 0%, hsl(22 100% 55% / 0.35) 45%, transparent 70%);
+    opacity: 0;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    filter: blur(2px);
+  }
+  .sg-chevron.is-locking .sg-chevron-pulse-ring {
+    animation: sg-chevron-pulse-ring 0.75s ease-out 0.57s both;
+  }
+
+  @media (max-width: 767px) {
+    /* On mobile, anchor the scene wrapper to the viewport so it shares the
+       exact same frame as the bottom-anchored background image
+       (portal-bg-mobile.png, 3072×5504, ratio ≈ 0.5582). Any % positioning
+       inside then maps 1:1 to the rendered image. */
+    .scene-mobile-sharp {
+      width: 100vw !important;
+      height: 100svh !important;
+      aspect-ratio: auto !important;
+      top: auto !important;
+      bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+    /* Stargate width matches the previous on-screen size (~89vw) so the
+       gate stays as large as before; bottom is computed responsively so the
+       feet sit at ~66.7% of the image height (i.e. 33.3% from its bottom).
+       max() handles both image-fit cases:
+         - viewport narrower than image  → image height = 100svh  → 33.3svh
+         - viewport wider  than image    → image height = 100vw / 0.5582
+                                          → 33.3% × that ≈ 59.68vw           */
+    .stargate-mobile-sharp {
+      width: calc(100vw - 20px) !important;
+      bottom: var(--stargate-bottom, max(33.3svh, 59.68vw)) !important;
+    }
+  }
+
+  /* Heavy mechanical lock — open wide to maximum, hold, snap back ("kachunk"),
+     flash on lock. Total 1.5s. */
+  .sg-chevron.is-locking .sg-chevron-top {
+    animation: sg-chevron-top-lock 1.5s both;
+  }
+  .sg-chevron.is-locking .sg-chevron-bottom {
+    animation: sg-chevron-bottom-lock 1.5s both;
+  }
+  .sg-chevron.is-locking .sg-chevron-top-lit {
+    animation: sg-chevron-flash 1.5s steps(1, end) both;
+  }
+  @keyframes sg-chevron-top-lock {
+    0%   { transform: translateY(0);      animation-timing-function: cubic-bezier(0.25, 0.9, 0.3, 1); }
+    32%  { transform: translateY(-16%);   animation-timing-function: steps(1, end); }
+    58%  { transform: translateY(-16%);   animation-timing-function: cubic-bezier(1, 0, 0.85, 0.2); }
+    68%  { transform: translateY(0.8%);   animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    80%  { transform: translateY(-0.2%); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes sg-chevron-bottom-lock {
+    0%   { transform: translateY(0);      animation-timing-function: cubic-bezier(0.25, 0.9, 0.3, 1); }
+    32%  { transform: translateY(8%);     animation-timing-function: steps(1, end); }
+    58%  { transform: translateY(8%);     animation-timing-function: cubic-bezier(1, 0, 0.85, 0.2); }
+    68%  { transform: translateY(-0.4%);  animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    100% { transform: translateY(0); }
+  }
+
+  @keyframes sg-chevron-flash {
+    0%   { opacity: 0; transform: translateY(0);     filter: brightness(0.6) saturate(1); animation-timing-function: cubic-bezier(0.25, 0.9, 0.3, 1); }
+    32%  { opacity: 0; transform: translateY(-16%);  filter: brightness(0.6) saturate(1); animation-timing-function: steps(1, end); }
+    58%  { opacity: 0; transform: translateY(-16%);  filter: brightness(0.6) saturate(1); animation-timing-function: cubic-bezier(1, 0, 0.85, 0.2); }
+    68%  { opacity: 1; transform: translateY(0.8%);  filter: brightness(3.2) saturate(1.8) drop-shadow(0 0 28px hsl(22 100% 60% / 1)); animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    80%  { opacity: 1; transform: translateY(-0.2%); filter: brightness(1.8) saturate(1.5) drop-shadow(0 0 14px hsl(22 100% 58% / 0.9)); }
+    100% { opacity: 1; transform: translateY(0);     filter: brightness(1.15) saturate(1.25) drop-shadow(0 0 8px hsl(22 100% 55% / 0.75)); }
+  }
+
+
+  @keyframes sg-chevron-pulse-ring {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.4); }
+    25%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(2.4); }
+  }
+
+  /* Persistent lit state */
+  .sg-chevron.is-locked .sg-chevron-top-lit {
+    opacity: 1;
+    filter: brightness(1.15) saturate(1.25) drop-shadow(0 0 8px hsl(22 100% 55% / 0.75));
+    animation: sg-chevron-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes sg-chevron-pulse {
+    0%, 100% { filter: brightness(1.05) saturate(1.2) drop-shadow(0 0 6px hsl(22 100% 55% / 0.6)); }
+    50%      { filter: brightness(1.35) saturate(1.35) drop-shadow(0 0 14px hsl(22 100% 60% / 0.95)); }
+  }
+  /* Final reveal — stronger glow on all locked chevrons during opening/open. */
+  .portal-stone.is-opening .sg-chevron.is-locked .sg-chevron-top-lit,
+  .portal-stone.is-open    .sg-chevron.is-locked .sg-chevron-top-lit {
+    filter: brightness(1.55) saturate(1.5) drop-shadow(0 0 20px hsl(22 100% 60% / 1));
+    animation: sg-chevron-pulse-strong 1.4s ease-in-out infinite;
+  }
+  @keyframes sg-chevron-pulse-strong {
+    0%, 100% { filter: brightness(1.4) saturate(1.4) drop-shadow(0 0 16px hsl(22 100% 58% / 0.95)); }
+    50%      { filter: brightness(2.0) saturate(1.6) drop-shadow(0 0 30px hsl(22 100% 62% / 1)); }
+  }
+
+  /* Mobile only: after the user taps "Rejouer", make sure any chevron that was
+     lit during the previous selection turns off while the portal is idle. */
+  @media (max-width: 767px) {
+    .portal-stone:not(.is-opening):not(.is-open) .sg-chevron:not(.is-locked):not(.is-locking):not(.is-revealing) .sg-chevron-top-lit {
+      opacity: 0 !important;
+      animation: none !important;
+    }
+  }
+
+
+  /* ----- Reveal-time dramatic chevron animation -----
+     Bigger amplitude lock, sustained flash, expanding shock ring. */
+  .sg-chevron.is-revealing .sg-chevron-top {
+    animation: sg-chevron-top-reveal 1.9s cubic-bezier(0.2, 0, 0.2, 1) both;
+  }
+  .sg-chevron.is-revealing .sg-chevron-bottom {
+    animation: sg-chevron-bottom-reveal 1.9s cubic-bezier(0.2, 0, 0.2, 1) both;
+  }
+  .sg-chevron.is-revealing .sg-chevron-top-lit {
+    animation: sg-chevron-flash-reveal 1.9s cubic-bezier(0.2, 0, 0.2, 1) both;
+  }
+
+  .sg-chevron.is-revealing .sg-chevron-pulse-ring {
+    animation: sg-chevron-shock-reveal 1.5s ease-out 0.25s both;
+  }
+  @keyframes sg-chevron-top-reveal {
+    0%   { transform: translateY(0); animation-timing-function: cubic-bezier(0.85, 0, 1, 0.4); }
+    22%  { transform: translateY(-14%); animation-timing-function: steps(1, end); }
+    34%  { transform: translateY(-14%); animation-timing-function: cubic-bezier(1, 0, 0.8, 0.15); }
+    42%  { transform: translateY(1.6%); animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    52%  { transform: translateY(-0.6%); }
+    62%  { transform: translateY(0.2%); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes sg-chevron-bottom-reveal {
+    0%   { transform: translateY(0) scale(1); animation-timing-function: cubic-bezier(0.85, 0, 1, 0.4); }
+    22%  { transform: translateY(7%) scale(1.03); animation-timing-function: steps(1, end); }
+    34%  { transform: translateY(7%) scale(1.03); animation-timing-function: cubic-bezier(1, 0, 0.8, 0.15); }
+    42%  { transform: translateY(-0.8%) scale(1.05); animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    55%  { transform: translateY(0.15%) scale(1.01); }
+    100% { transform: translateY(0) scale(1); }
+  }
+  @keyframes sg-chevron-flash-reveal {
+    0%   { opacity: 0; transform: translateY(0);     filter: brightness(0.6) saturate(1); animation-timing-function: cubic-bezier(0.85, 0, 1, 0.4); }
+    22%  { opacity: 0; transform: translateY(-14%); filter: brightness(0.6) saturate(1); animation-timing-function: steps(1, end); }
+    34%  { opacity: 0; transform: translateY(-14%); filter: brightness(0.6) saturate(1); animation-timing-function: cubic-bezier(1, 0, 0.8, 0.15); }
+    42%  { opacity: 1; transform: translateY(1.6%);  filter: brightness(5) saturate(2) drop-shadow(0 0 60px hsl(22 100% 65% / 1)) drop-shadow(0 0 28px hsl(48 100% 70% / 0.9)); animation-timing-function: cubic-bezier(0.2, 0, 0.3, 1); }
+    52%  { opacity: 1; transform: translateY(-0.6%); filter: brightness(3.2) saturate(1.8) drop-shadow(0 0 40px hsl(22 100% 60% / 1)); }
+    62%  { opacity: 1; transform: translateY(0.2%);  filter: brightness(2.1) saturate(1.6) drop-shadow(0 0 22px hsl(22 100% 58% / 0.95)); }
+    100% { opacity: 1; transform: translateY(0);     filter: brightness(1.55) saturate(1.45) drop-shadow(0 0 14px hsl(22 100% 55% / 0.85)); }
+  }
+
+
+  @keyframes sg-chevron-shock-reveal {
+    0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+    18%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(5); }
+  }
+
+
+
+  /* Camera/screen shake on the section during the alarm */
+  .shake-screen {
+    animation: shake-screen 0.18s linear infinite;
+  }
+  .shake-lock {
+    animation: shake-lock 0.45s cubic-bezier(0.2, 0, 0.3, 1) 1;
+  }
+  @keyframes shake-lock {
+    0%   { transform: translate(0, 0); }
+    15%  { transform: translate(-2px, 1px); }
+    30%  { transform: translate(2px, -1px); }
+    45%  { transform: translate(-1.5px, 1.5px); }
+    60%  { transform: translate(1px, -1px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes shake-screen {
+    0% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+    20% {
+      transform: translate(-3px, 2px) rotate(-0.15deg);
+    }
+    40% {
+      transform: translate(3px, -2px) rotate(0.15deg);
+    }
+    60% {
+      transform: translate(-2px, -3px) rotate(-0.1deg);
+    }
+    80% {
+      transform: translate(2px, 3px) rotate(0.1deg);
+    }
+    100% {
+      transform: translate(0, 0) rotate(0deg);
+    }
+  }
+
+  /* Full-room red sweeping light during alarm */
+  .room-red-sweep {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+    mix-blend-mode: screen;
+    overflow: hidden;
+  }
+  .room-red-sweep::before,
+  .room-red-sweep::after {
+    content: "";
+    position: absolute;
+    top: -20%;
+    bottom: -20%;
+    width: 50%;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(0 100% 55% / 0.38) 40%,
+      hsl(15 100% 55% / 0.55) 50%,
+      hsl(0 100% 55% / 0.38) 60%,
+      transparent 100%
+    );
+    filter: blur(40px);
+    animation: room-sweep 1.6s linear infinite;
+  }
+  .room-red-sweep::after {
+    animation-delay: -0.8s;
+    animation-direction: reverse;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      hsl(28 100% 55% / 0.35) 40%,
+      hsl(0 100% 50% / 0.5) 50%,
+      hsl(28 100% 55% / 0.35) 60%,
+      transparent 100%
+    );
+  }
+  @keyframes room-sweep {
+    0% {
+      left: -60%;
+    }
+    100% {
+      left: 110%;
+    }
+  }
+
+  /* Smoke / vapor billowing out of the portal before the kawoosh */
+  .portal-smoke {
+    position: absolute;
+    inset: 10% 5% 0 5%;
+    pointer-events: none;
+    z-index: 6;
+    overflow: visible;
+  }
+  .portal-smoke span {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    width: 38%;
+    height: 38%;
+    border-radius: 9999px;
+    background: radial-gradient(circle, hsl(0 0% 100% / 0.55) 0%, hsl(220 30% 85% / 0.35) 40%, transparent 70%);
+    filter: blur(14px);
+    opacity: 0;
+    mix-blend-mode: screen;
+    animation: portal-smoke-rise 2.4s ease-out infinite;
+  }
+  .portal-smoke span:nth-child(1) {
+    left: 30%;
+    animation-delay: 0s;
+    transform: translate(-50%, 0);
+  }
+  .portal-smoke span:nth-child(2) {
+    left: 50%;
+    animation-delay: 0.3s;
+    transform: translate(-50%, 0);
+    width: 46%;
+    height: 46%;
+  }
+  .portal-smoke span:nth-child(3) {
+    left: 70%;
+    animation-delay: 0.6s;
+    transform: translate(-50%, 0);
+  }
+  .portal-smoke span:nth-child(4) {
+    left: 40%;
+    animation-delay: 0.9s;
+    transform: translate(-50%, 0);
+    width: 30%;
+    height: 30%;
+  }
+  .portal-smoke span:nth-child(5) {
+    left: 60%;
+    animation-delay: 1.2s;
+    transform: translate(-50%, 0);
+    width: 34%;
+    height: 34%;
+  }
+  @keyframes portal-smoke-rise {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, 30%) scale(0.5);
+    }
+    30% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -120%) scale(1.5);
+    }
+  }
+
+  /* Heavy mechanical lock thunk flash */
+  .portal-lock-flash {
+    position: absolute;
+    inset: -4%;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 8;
+    background: radial-gradient(circle, hsl(44 100% 75% / 0.7) 0%, hsl(28 100% 60% / 0.35) 40%, transparent 70%);
+    mix-blend-mode: screen;
+    animation: portal-lock-flash 0.55s ease-out forwards;
+  }
+  @keyframes portal-lock-flash {
+    0% {
+      opacity: 0;
+      transform: scale(1.15);
+    }
+    25% {
+      opacity: 1;
+      transform: scale(0.95);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1);
+    }
+  }
+
+  /* Living-vortex layered flow — subtle counter-drift + luminosity pulse.
+     Keeps the video reading as organic energy, not a rotating texture. */
+  @keyframes portalVortexSpinA {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to   { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  @keyframes portalVortexSpinB {
+    from { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
+    50%  { transform: translate(-50%, -50%) rotate(180deg) scale(1.04); }
+    to   { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+  }
+  @keyframes portalVortexDrift {
+    0%   { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
+    50%  { transform: translate(-50%, -50%) rotate(-8deg)  scale(1.03); }
+    100% { transform: translate(-50%, -50%) rotate(0deg)   scale(1); }
+  }
+  @keyframes portalVortexPulse {
+    0%, 100% { filter: brightness(1) saturate(1); }
+    50%      { filter: brightness(1.12) saturate(1.1); }
+  }
+
+
+
+  /* Violent shockwave ring on vortex */
+  .portal-shockwave {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    pointer-events: none;
+    z-index: 9;
+    border: 6px solid hsl(188 100% 70% / 0.9);
+    box-shadow:
+      0 0 60px 20px hsl(188 100% 60% / 0.7),
+      inset 0 0 60px 10px hsl(188 100% 80% / 0.5);
+    opacity: 0;
+    animation: portal-shockwave 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+  .portal-shockwave-2 {
+    animation-delay: 0.18s;
+    border-color: hsl(44 100% 70% / 0.9);
+    box-shadow:
+      0 0 60px 20px hsl(44 100% 60% / 0.6),
+      inset 0 0 60px 10px hsl(44 100% 80% / 0.4);
+  }
+  @keyframes portal-shockwave {
+    0% {
+      opacity: 1;
+      transform: scale(0.4);
+      border-width: 8px;
+    }
+    60% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: scale(3.4);
+      border-width: 1px;
+    }
+  }
+
+  /* ============================================================
+     STARGATE SG-1 KAWOOSH — unstable vortex burst on wormhole
+     establishment. A bright blue-white lobe explodes forward from
+     the ring center, extends past the frame, then retracts and
+     settles into the stable event horizon.
+     ============================================================ */
+  .portal-kawoosh {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 7;
+    display: block;
+    overflow: visible;
+    transform-style: preserve-3d;
+    perspective: 1400px;
+    perspective-origin: 50% 50%;
+  }
+  .portal-kawoosh > span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 9999px;
+    mix-blend-mode: screen;
+    transform-origin: center center;
+    will-change: transform, opacity, filter;
+    opacity: 0;
+  }
+  /* Bright forward-punching lobe — iconic geyser jumping out of the ring toward
+     the viewer, then retracting back into a stable event horizon. */
+  .portal-kawoosh-core {
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(
+      circle at 50% 45%,
+      hsl(0 0% 100%) 0%,
+      hsl(200 100% 94% / 0.98) 18%,
+      hsl(198 100% 78% / 0.92) 38%,
+      hsl(208 100% 55% / 0.7) 62%,
+      hsl(220 90% 35% / 0.35) 82%,
+      transparent 92%
+    );
+    filter: blur(2px) drop-shadow(0 0 60px hsl(198 100% 75% / 0.95));
+    animation: portal-kawoosh-core 2.2s cubic-bezier(0.22, 1, 0.28, 1) forwards;
+  }
+  /* Turbulent liquid tendrils jumping outward with the burst */
+  .portal-kawoosh-splash {
+    width: 90%;
+    height: 90%;
+    background:
+      radial-gradient(ellipse 55% 75% at 50% 35%, hsl(190 100% 92% / 0.95), transparent 68%),
+      radial-gradient(ellipse 32% 60% at 22% 55%, hsl(200 100% 80% / 0.8), transparent 65%),
+      radial-gradient(ellipse 32% 60% at 78% 55%, hsl(200 100% 80% / 0.8), transparent 65%),
+      radial-gradient(ellipse 25% 45% at 50% 75%, hsl(210 100% 70% / 0.7), transparent 70%);
+    filter: blur(5px);
+    animation: portal-kawoosh-splash 2.4s cubic-bezier(0.22, 1, 0.28, 1) forwards;
+  }
+  .portal-kawoosh-splash-2 {
+    animation-delay: 0.1s;
+    animation-duration: 2.6s;
+    background:
+      radial-gradient(ellipse 65% 65% at 50% 45%, hsl(210 100% 82% / 0.7), transparent 70%),
+      radial-gradient(ellipse 28% 48% at 18% 62%, hsl(195 100% 88% / 0.6), transparent 70%),
+      radial-gradient(ellipse 28% 48% at 82% 62%, hsl(195 100% 88% / 0.6), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 50% 20%, hsl(200 100% 92% / 0.75), transparent 70%);
+    filter: blur(7px);
+  }
+  .portal-kawoosh-ripple {
+    width: 90%;
+    height: 90%;
+    background: radial-gradient(circle, transparent 52%, hsl(198 100% 72% / 0.55) 66%, transparent 78%);
+    filter: blur(3px);
+    animation: portal-kawoosh-ripple 2s ease-out forwards;
+  }
+
+  @keyframes portal-kawoosh-core {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateZ(0) scale(0.1);
+      filter: blur(6px) drop-shadow(0 0 20px hsl(198 100% 70% / 0.6));
+    }
+    12% {
+      opacity: 1;
+      transform: translate(-50%, -50%) translateZ(120px) scale(1.4);
+    }
+    28% {
+      opacity: 1;
+      transform: translate(-50%, -52%) translateZ(260px) scale(2.6);
+      filter: blur(1.5px) drop-shadow(0 0 90px hsl(198 100% 85% / 1));
+    }
+    45% {
+      opacity: 0.98;
+      transform: translate(-50%, -50%) translateZ(180px) scale(2.2);
+    }
+    68% {
+      opacity: 0.9;
+      transform: translate(-50%, -50%) translateZ(40px) scale(1.15);
+    }
+    92% {
+      opacity: 0.65;
+      transform: translate(-50%, -50%) translateZ(0) scale(0.92);
+      filter: blur(2px) drop-shadow(0 0 30px hsl(198 100% 70% / 0.7));
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateZ(0) scale(0.88);
+      filter: blur(2px) drop-shadow(0 0 30px hsl(198 100% 70% / 0));
+    }
+  }
+  @keyframes portal-kawoosh-splash {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateZ(0) scale(0.15);
+    }
+    16% {
+      opacity: 0.95;
+      transform: translate(-50%, -50%) translateZ(160px) scale(2.1);
+    }
+    34% {
+      opacity: 0.9;
+      transform: translate(-50%, -52%) translateZ(240px) scale(2.9);
+    }
+    55% {
+      opacity: 0.55;
+      transform: translate(-50%, -50%) translateZ(120px) scale(1.7);
+    }
+    80% {
+      opacity: 0.2;
+      transform: translate(-50%, -50%) translateZ(30px) scale(1.05);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) translateZ(0) scale(0.9);
+    }
+  }
+  @keyframes portal-kawoosh-ripple {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.4);
+    }
+    35% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(2.4);
+    }
+  }
+
+  /* Full-screen white flash on the explosion */
+  .room-shockwave-flash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 70;
+    background: radial-gradient(
+      circle at center,
+      hsl(0 0% 100% / 0.95) 0%,
+      hsl(188 100% 70% / 0.6) 30%,
+      hsl(220 100% 50% / 0.2) 60%,
+      transparent 80%
+    );
+    mix-blend-mode: screen;
+    animation: room-flash 0.9s ease-out forwards;
+  }
+  @keyframes room-flash {
+    0% {
+      opacity: 0;
+    }
+    8% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  .portal-symbol {
+    position: absolute;
+    width: 6%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+    border-radius: 9999px;
+  }
+  .portal-symbol:disabled {
+    cursor: default;
+  }
+  .portal-symbol-inner {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 9999px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .portal-symbol:not(:disabled):hover .portal-symbol-inner {
+    background: radial-gradient(circle, hsl(217 90% 75% / 0.6) 0%, hsl(217 90% 60% / 0.3) 55%, transparent 82%);
+    border-color: hsl(217 90% 80% / 0.95);
+    box-shadow:
+      0 0 22px hsl(217 90% 60% / 0.85),
+      inset 0 0 14px hsl(217 90% 80% / 0.65);
+    transform: scale(1.35);
+  }
+  .portal-symbol.is-selected .portal-symbol-inner {
+    background: radial-gradient(circle, hsl(217 90% 75% / 0.7) 0%, hsl(217 90% 55% / 0.35) 60%, transparent 88%);
+    border-color: hsl(217 90% 75% / 1);
+    border-width: 2px;
+    box-shadow:
+      0 0 30px hsl(217 90% 55% / 1),
+      inset 0 0 18px hsl(217 90% 80% / 0.75);
+    transform: scale(1.45);
+    backdrop-filter: brightness(1.6) contrast(1.4);
+    -webkit-backdrop-filter: brightness(1.6) contrast(1.4);
+  }
+
+  /* Ambient synchronous blue breathing glow on every interactive glyph.
+     Applied directly to the highlight circle so it feels like the selection ring
+     gently pulsing in unison — a soft ancient "clignotement" that guides users. */
+  .portal-symbol-inner.has-guide {
+    background: radial-gradient(
+      circle,
+      hsl(215 100% 72% / 0.55) 0%,
+      hsl(217 100% 60% / 0.35) 50%,
+      transparent 78%
+    );
+    border: 2px solid hsl(215 100% 70% / 0.6);
+    box-shadow:
+      0 0 20px hsl(215 100% 65% / 0.65),
+      inset 0 0 14px hsl(215 100% 80% / 0.5);
+    animation: portal-inner-guide-breathe 5s linear infinite;
+  }
+  @keyframes portal-inner-guide-breathe {
+    0%,
+    40% {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    70% {
+      opacity: 0.9;
+      transform: scale(1.08);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  .portal-symbol-pulse {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    border: 2px solid hsl(217 90% 60%);
+    animation: portal-pulse 1.4s ease-out infinite;
+    pointer-events: none;
+  }
+
+  /* Legacy outer-halo guide (kept for reference; now unused). */
+  .portal-symbol-guide {
+    position: absolute;
+    inset: -45%;
+    border-radius: 9999px;
+    pointer-events: none;
+    background: radial-gradient(
+      circle,
+      hsl(210 100% 92% / 0.65) 0%,
+      hsl(212 100% 78% / 0.35) 40%,
+      hsl(215 100% 60% / 0) 72%
+    );
+    opacity: 0;
+    filter: blur(2px);
+    animation: portal-guide-breathe 2.8s ease-in-out infinite;
+    will-change: opacity, transform;
+  }
+  @keyframes portal-guide-breathe {
+    0%,
+    100% {
+      opacity: 0;
+      transform: scale(0.92);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.28);
+    }
+  }
+
+
+
+
+  @keyframes portal-breathe {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.85;
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+  }
+  @keyframes portal-burst {
+    0% {
+      opacity: 0.6;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    60% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.6);
+    }
+    100% {
+      opacity: 0.95;
+      transform: translate(-50%, -50%) scale(1.3);
+    }
+  }
+  @keyframes portal-pulse {
+    0% {
+      box-shadow: 0 0 0 0 hsl(48 100% 60% / 0.7);
+      opacity: 1;
+    }
+    100% {
+      box-shadow: 0 0 0 18px hsl(48 100% 60% / 0);
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Knowledge Portal (legacy CSS ring) ---------- */
+  .portal {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+  }
+  .portal-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      hsl(220 100% 60%),
+      hsl(188 100% 60%),
+      hsl(248 100% 70%),
+      hsl(220 100% 60%),
+      hsl(188 100% 60%),
+      hsl(220 100% 60%)
+    );
+    -webkit-mask: radial-gradient(circle, transparent 64%, #000 65%, #000 78%, transparent 79%);
+    mask: radial-gradient(circle, transparent 64%, #000 65%, #000 78%, transparent 79%);
+    filter: drop-shadow(0 0 24px hsl(188 100% 55% / 0.55));
+    animation: portal-rotate 22s linear infinite;
+  }
+  .portal-ring-inner {
+    position: absolute;
+    inset: 14%;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(0 0% 100% / 0.95) 0%,
+      hsl(220 100% 96%) 40%,
+      hsl(220 100% 90%) 60%,
+      hsl(220 100% 84%) 100%
+    );
+    box-shadow:
+      inset 0 0 30px hsl(220 100% 70% / 0.35),
+      inset 0 0 60px hsl(188 100% 70% / 0.25),
+      0 10px 40px -10px hsl(220 80% 50% / 0.4);
+  }
+  .portal-core {
+    position: absolute;
+    inset: 30%;
+    border-radius: inherit;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(0 0% 100%) 0%,
+      hsl(188 100% 90%) 35%,
+      hsl(220 100% 80% / 0.5) 65%,
+      transparent 75%
+    );
+    opacity: 0.55;
+    transition: all 0.6s ease;
+    filter: blur(2px);
+    animation: portal-breathe 3.5s ease-in-out infinite;
+  }
+  .portal.is-opening .portal-core {
+    inset: 8%;
+    opacity: 1;
+    filter: blur(6px);
+    animation: portal-burst 1.4s ease-out forwards;
+  }
+  .portal.is-open .portal-core {
+    inset: 18%;
+    opacity: 0.85;
+    background: radial-gradient(
+      circle,
+      hsl(0 0% 100%) 0%,
+      hsl(188 100% 80%) 50%,
+      hsl(220 100% 65% / 0.4) 80%,
+      transparent
+    );
+  }
+
+  /* Symbols are styled in the engraved-stone block above (lines ~309-372). */
+
+  @keyframes portal-rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes portal-breathe {
+    0%,
+    100% {
+      opacity: 0.5;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.75;
+      transform: scale(1.05);
+    }
+  }
+  @keyframes portal-burst {
+    0% {
+      opacity: 0.6;
+      filter: blur(2px);
+    }
+    60% {
+      opacity: 1;
+      filter: blur(8px);
+      transform: scale(1.15);
+    }
+    100% {
+      opacity: 0.95;
+      filter: blur(4px);
+      transform: scale(1);
+    }
+  }
+  @keyframes portal-pulse {
+    0% {
+      box-shadow: 0 0 0 0 hsl(48 100% 60% / 0.7);
+      opacity: 1;
+    }
+    100% {
+      box-shadow: 0 0 0 18px hsl(48 100% 60% / 0);
+      opacity: 0;
+    }
+  }
+
+  /* ---------- Reveal animation (category unlock) ---------- */
+  .reveal-pop > .reveal-icon {
+    animation: reveal-icon-pop 0.85s cubic-bezier(0.2, 0.9, 0.25, 1.25) both;
+    transform-origin: center;
+  }
+  .reveal-pop > .reveal-badge {
+    animation: reveal-rise 0.5s ease-out 0s both;
+  }
+  .reveal-pop > .reveal-title {
+    animation: reveal-rise 0.6s cubic-bezier(0.2, 0.9, 0.25, 1.15) 0.08s both;
+  }
+  .reveal-icon::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+    border-radius: inherit;
+    box-shadow: 0 0 0 0 hsl(48 100% 65% / 0.75);
+    animation: reveal-ring 1.6s ease-out 0.2s 2;
+    pointer-events: none;
+  }
+  .reveal-glyph-svg {
+    position: absolute;
+    inset: 12%;
+    display: block;
+    width: 76%;
+    height: 76%;
+    overflow: hidden;
+    animation: reveal-glyph-fade 0.35s ease-out both;
+    image-rendering: auto;
+    shape-rendering: geometricPrecision;
+    filter: none;
+  }
+  .reveal-glyph-svg image {
+    image-rendering: auto;
+  }
+  .reveal-halo {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.2);
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle,
+      hsl(48 100% 65% / 0.25) 0%,
+      transparent 70%
+    );
+    mix-blend-mode: normal;
+    pointer-events: none;
+    z-index: -1;
+    animation: reveal-halo 1.2s ease-out both;
+  }
+  .reveal-rays {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(0deg);
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      hsl(48 100% 65% / 0.18) 6deg,
+      transparent 12deg,
+      transparent 30deg,
+      hsl(48 100% 65% / 0.18) 36deg,
+      transparent 42deg,
+      transparent 60deg,
+      hsl(48 100% 65% / 0.18) 66deg,
+      transparent 72deg,
+      transparent 90deg,
+      hsl(48 100% 65% / 0.18) 96deg,
+      transparent 102deg,
+      transparent 120deg,
+      hsl(48 100% 65% / 0.18) 126deg,
+      transparent 132deg,
+      transparent 150deg,
+      hsl(48 100% 65% / 0.18) 156deg,
+      transparent 162deg,
+      transparent 180deg,
+      hsl(48 100% 65% / 0.18) 186deg,
+      transparent 192deg,
+      transparent 210deg,
+      hsl(48 100% 65% / 0.18) 216deg,
+      transparent 222deg,
+      transparent 240deg,
+      hsl(48 100% 65% / 0.18) 246deg,
+      transparent 252deg,
+      transparent 270deg,
+      hsl(48 100% 65% / 0.18) 276deg,
+      transparent 282deg,
+      transparent 300deg,
+      hsl(48 100% 65% / 0.18) 306deg,
+      transparent 312deg,
+      transparent 330deg,
+      hsl(48 100% 65% / 0.18) 336deg,
+      transparent 342deg,
+      transparent 360deg
+    );
+    -webkit-mask: radial-gradient(circle, transparent 28%, #000 32%, #000 60%, transparent 70%);
+    mask: radial-gradient(circle, transparent 28%, #000 32%, #000 60%, transparent 70%);
+    mix-blend-mode: normal;
+    opacity: 0;
+    pointer-events: none;
+    z-index: -1;
+    animation:
+      reveal-rays 2.4s ease-out both,
+      reveal-spin 8s linear infinite 0.4s;
+  }
+  @keyframes reveal-icon-pop {
+    0% {
+      transform: scale(0.2) rotate(-30deg);
+      opacity: 0;
+      filter: brightness(2);
+    }
+    60% {
+      transform: scale(1.15) rotate(6deg);
+      opacity: 1;
+      filter: brightness(1.3);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+      opacity: 1;
+      filter: brightness(1);
+    }
+  }
+  @keyframes reveal-glyph-fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes reveal-rise {
+    0% {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes reveal-ring {
+    0% {
+      box-shadow: 0 0 0 0 hsl(48 100% 65% / 0.75);
+    }
+    100% {
+      box-shadow: 0 0 0 36px hsl(48 100% 65% / 0);
+    }
+  }
+  @keyframes reveal-halo {
+    0% {
+      transform: translate(-50%, -50%) scale(0.2);
+      opacity: 0;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.15);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0.85;
+    }
+  }
+  @keyframes reveal-rays {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) rotate(-20deg) scale(0.5);
+    }
+    40% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0.55;
+      transform: translate(-50%, -50%) rotate(20deg) scale(1);
+    }
+  }
+  @keyframes reveal-spin {
+    to {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+
+  /* ---------- Stargate Portal (legacy) ---------- */
+  .stargate {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+    background: radial-gradient(
+      circle at 50% 50%,
+      hsl(220 30% 8%) 0%,
+      hsl(220 40% 10%) 38%,
+      hsl(220 35% 22%) 42%,
+      hsl(220 30% 35%) 50%,
+      hsl(220 25% 28%) 58%,
+      hsl(220 30% 18%) 100%
+    );
+    box-shadow:
+      0 0 0 6px hsl(220 25% 14%),
+      0 0 60px hsl(188 100% 55% / 0.55),
+      0 0 120px hsl(220 100% 55% / 0.35),
+      inset 0 0 60px hsl(220 30% 0% / 0.6);
+  }
+  /* Outer ring with chevrons (9 symbols) */
+  .stargate::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: conic-gradient(
+      from 0deg,
+      hsl(220 20% 38%),
+      hsl(220 25% 22%),
+      hsl(220 20% 38%),
+      hsl(220 25% 22%),
+      hsl(220 20% 38%),
+      hsl(220 25% 22%),
+      hsl(220 20% 38%),
+      hsl(220 25% 22%),
+      hsl(220 20% 38%)
+    );
+    -webkit-mask: radial-gradient(circle, transparent 60%, #000 60.5%, #000 78%, transparent 78.5%);
+    mask: radial-gradient(circle, transparent 60%, #000 60.5%, #000 78%, transparent 78.5%);
+  }
+  /* Event horizon — water-like puddle */
+  .stargate-eventhorizon {
+    position: absolute;
+    inset: 18%;
+    border-radius: 9999px;
+    background:
+      radial-gradient(circle at 35% 30%, hsl(188 100% 85% / 0.95), transparent 45%),
+      radial-gradient(circle at 65% 70%, hsl(220 100% 75% / 0.85), transparent 50%),
+      conic-gradient(
+        from 0deg,
+        hsl(200 100% 55%),
+        hsl(220 100% 55%),
+        hsl(188 100% 60%),
+        hsl(248 100% 65%),
+        hsl(200 100% 55%)
+      );
+    box-shadow:
+      inset 0 0 40px hsl(0 0% 100% / 0.5),
+      inset 0 0 80px hsl(188 100% 70% / 0.6),
+      0 0 60px hsl(188 100% 60% / 0.7);
+    filter: blur(0.5px);
+    animation: stargate-ripple 6s ease-in-out infinite;
+  }
+  .stargate-eventhorizon::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: repeating-radial-gradient(
+      circle at 50% 50%,
+      transparent 0px,
+      hsl(0 0% 100% / 0.08) 6px,
+      transparent 12px
+    );
+    mix-blend-mode: overlay;
+    animation: stargate-spin 18s linear infinite;
+  }
+  .chevron {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8%;
+    aspect-ratio: 1 / 1;
+    transform-origin: 0 0;
+    border-radius: 4px;
+    background: linear-gradient(180deg, hsl(44 100% 65%), hsl(38 100% 45%));
+    box-shadow:
+      0 0 12px hsl(44 100% 60% / 0.7),
+      inset 0 -2px 4px hsl(30 80% 25% / 0.5);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+  .chevron.lit {
+    background: linear-gradient(180deg, hsl(48 100% 75%), hsl(38 100% 55%));
+    box-shadow:
+      0 0 18px hsl(44 100% 65%),
+      0 0 32px hsl(44 100% 55% / 0.8);
+  }
+  .stargate-spin {
+    animation: stargate-spin 24s linear infinite;
+  }
+  @keyframes stargate-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes stargate-ripple {
+    0%,
+    100% {
+      filter: blur(0.5px) hue-rotate(0deg);
+      transform: scale(1);
+    }
+    50% {
+      filter: blur(1.5px) hue-rotate(20deg);
+      transform: scale(1.02);
+    }
+  }
+
+  /* ---------- Trivia Wheel (Trivia Crack style) — kept for reference ---------- */
+  .trivia-wheel {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: 9999px;
+    background: conic-gradient(
+      hsl(142 70% 45%) 0deg 60deg,
+      /* Science  - green */ hsl(38 95% 55%) 60deg 120deg,
+      /* Sports   - orange */ hsl(48 100% 55%) 120deg 180deg,
+      /* History  - yellow */ hsl(210 90% 55%) 180deg 240deg,
+      /* Geo      - blue */ hsl(280 70% 55%) 240deg 300deg,
+      /* Ent.     - purple */ hsl(350 80% 55%) 300deg 360deg /* Art      - red */
+    );
+    box-shadow:
+      0 0 0 10px hsl(0 0% 100%),
+      0 0 0 14px hsl(220 30% 18%),
+      0 30px 60px -20px hsl(220 60% 30% / 0.45),
+      inset 0 0 30px hsl(220 30% 0% / 0.15);
+  }
+  .trivia-wheel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: repeating-conic-gradient(from 0deg, transparent 0deg 59.4deg, hsl(220 30% 18% / 0.95) 59.4deg 60deg);
+    pointer-events: none;
+  }
+  .trivia-wheel-hub {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 36%;
+    aspect-ratio: 1/1;
+    border-radius: 9999px;
+    background: radial-gradient(circle at 35% 30%, hsl(0 0% 100%), hsl(220 30% 92%) 60%, hsl(220 30% 80%));
+    box-shadow:
+      0 0 0 6px hsl(220 30% 18%),
+      0 10px 24px hsl(220 60% 20% / 0.35),
+      inset 0 -8px 16px hsl(220 30% 70% / 0.5);
+    display: grid;
+    place-items: center;
+    z-index: 3;
+  }
+  .trivia-pointer {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 30px solid hsl(220 30% 18%);
+    filter: drop-shadow(0 4px 6px hsl(220 60% 20% / 0.4));
+    z-index: 4;
+  }
+  .trivia-pointer::after {
+    content: "";
+    position: absolute;
+    top: -30px;
+    left: -14px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid transparent;
+    border-right: 14px solid transparent;
+    border-top: 22px solid hsl(48 100% 60%);
+  }
+  .wheel-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14%;
+    aspect-ratio: 1/1;
+    display: grid;
+    place-items: center;
+    color: hsl(0 0% 100%);
+    font-size: clamp(14px, 3.2vw, 22px);
+    text-shadow: 0 2px 4px hsl(220 60% 20% / 0.45);
+    transform-origin: 0 0;
+    z-index: 2;
+  }
+  .wheel-spin {
+    animation: wheel-spin 24s linear infinite;
+  }
+  @keyframes wheel-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes wheel-bounce {
+    0%,
+    100% {
+      transform: rotate(0deg);
+    }
+    25% {
+      transform: rotate(-3deg);
+    }
+    75% {
+      transform: rotate(3deg);
+    }
+  }
+  .category-chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 md:gap-1.5 md:px-3 md:py-1.5 rounded-full text-[11px] md:text-sm font-extrabold text-white shadow-soft;
+  }
+  @media (max-width: 639px) {
+    .category-chip {
+      box-shadow: inset 0 0 0 999px var(--chip-bg, transparent);
+    }
+    .category-chip-fade-mobile {
+      background-color: transparent !important;
+      box-shadow: none !important;
+    }
+    .category-chip-fade-mobile::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      background-color: var(--chip-bg, transparent);
+      opacity: 0.75;
+      z-index: -1;
+    }
+    .category-chip-fade-mobile::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 9999px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        color-mix(in srgb, var(--chip-bg, transparent) 100%, white 80%) 0%,
+        color-mix(in srgb, var(--chip-bg, transparent) 100%, white 30%) 50%,
+        color-mix(in srgb, var(--chip-bg, transparent) 100%, black 15%) 100%
+      );
+      -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor;
+              mask-composite: exclude;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+
+  }
+
+
+  /* Money ladder tier (kept for Systems section) */
+  .tier-row {
+    @apply flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-semibold transition-all;
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--card));
+  }
+  .tier-row.safe {
+    background: linear-gradient(90deg, hsl(220 100% 96%), hsl(188 100% 96%));
+    color: hsl(220 100% 40%);
+  }
+  .tier-row.monthly {
+    background: linear-gradient(90deg, hsl(270 100% 96%), hsl(300 100% 96%));
+    color: hsl(270 80% 40%);
+    border-color: hsl(270 70% 70% / 0.5);
+    box-shadow: 0 0 18px -4px hsl(270 80% 60% / 0.35);
+  }
+  .tier-row.current {
+    background: var(--gradient-gold);
+    color: hsl(var(--gold-foreground));
+    box-shadow: var(--shadow-gold);
+    transform: scale(1.04);
+    border-color: transparent;
+  }
+  .tier-row.locked {
+    background: hsl(220 50% 96%);
+    color: hsl(222 20% 55%);
+  }
+}
+
+/* Invisible scroll target: covers the title, Stargate, and counter/instruction
+   so the browser can center the whole portal control area on first entry. */
+.portal-scroll-target {
+  position: absolute;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: -1;
+  top: calc(11vh - 0.5rem);
+  bottom: calc(env(safe-area-inset-bottom) + clamp(2rem, 14vh, 8rem) - 5vh + 0.5rem);
+}
+
+/* Portal page: lift the counter + CTA overlay on desktop only (outside any @layer) */
+@media (min-width: 768px) {
+  .portal-title-desktop-spacing {
+    top: 7rem !important;
+  }
+
+  .portal-scene-desktop-spacing {
+    margin-top: 24rem !important;
+  }
+
+  .portal-overlay-bottom {
+    bottom: calc(5.5rem + 45vh) !important;
+  }
+
+  .portal-scroll-target {
+    top: calc(7rem - 0.5rem);
+    bottom: calc(5.5rem + 45vh + 0.5rem);
+  }
+
+  /* Inside the "How to play" guide iframe on desktop, give the Stargate
+     enough top room so the ring is never clipped above the viewport; the
+     entry scroll-centering then centers Stargate + counter + keyboard. */
+  .portal-iframe-popup .portal-scene-desktop-spacing {
+    margin-top: clamp(22rem, 34vh, 26rem) !important;
+  }
+
+  .portal-iframe-popup .portal-overlay-bottom {
+    bottom: calc(4rem + 38vh) !important;
+  }
+
+  /* Iframe popup: lay content out from the top (instead of flex-centering,
+     which clips the Stargate ring above the viewport with no way to scroll
+     up). The entry scroll-centering then centers Stargate + counter +
+     keyboard exactly like the main portal page. */
+  .portal-iframe-popup .portal-iframe-inner {
+    justify-content: flex-start;
+  }
+}
+
+
+
+
+
+
+/* Desktop-only starfield overlay for the portal sky.
+   Uses layered radial-gradients to render tiny twinkling stars without extra DOM. */
+.portal-stars-desktop {
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 12%, rgba(255,255,255,0.95) 50%, transparent 100%),
+    radial-gradient(1px 1px at 17% 32%, rgba(255,255,255,0.75) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 23% 8%, rgba(255,255,255,0.9) 50%, transparent 100%),
+    radial-gradient(1px 1px at 31% 22%, rgba(200,220,255,0.7) 50%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 38% 5%, rgba(255,255,255,0.95) 50%, transparent 100%),
+    radial-gradient(1px 1px at 44% 18%, rgba(255,255,255,0.65) 50%, transparent 100%),
+    radial-gradient(1.6px 1.6px at 52% 28%, rgba(255,255,255,0.95) 50%, transparent 100%),
+    radial-gradient(1px 1px at 58% 9%, rgba(220,230,255,0.8) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 64% 35%, rgba(255,255,255,0.8) 50%, transparent 100%),
+    radial-gradient(1px 1px at 71% 14%, rgba(255,255,255,0.7) 50%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 77% 25%, rgba(255,255,255,0.9) 50%, transparent 100%),
+    radial-gradient(1.1px 1.1px at 83% 6%, rgba(255,255,255,0.85) 50%, transparent 100%),
+    radial-gradient(1px 1px at 89% 19%, rgba(210,225,255,0.7) 50%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 94% 33%, rgba(255,255,255,0.95) 50%, transparent 100%),
+    radial-gradient(1px 1px at 4% 40%, rgba(255,255,255,0.65) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 12% 48%, rgba(255,255,255,0.8) 50%, transparent 100%),
+    radial-gradient(1px 1px at 27% 55%, rgba(220,230,255,0.6) 50%, transparent 100%),
+    radial-gradient(1.3px 1.3px at 42% 45%, rgba(255,255,255,0.85) 50%, transparent 100%),
+    radial-gradient(1px 1px at 56% 52%, rgba(255,255,255,0.6) 50%, transparent 100%),
+    radial-gradient(1.2px 1.2px at 68% 42%, rgba(255,255,255,0.8) 50%, transparent 100%),
+    radial-gradient(1px 1px at 80% 50%, rgba(210,225,255,0.65) 50%, transparent 100%),
+    radial-gradient(1.4px 1.4px at 91% 47%, rgba(255,255,255,0.9) 50%, transparent 100%);
+  background-repeat: no-repeat;
+  /* Fade the stars near the horizon so they blend into the sky gradient */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+  animation: portal-stars-twinkle 4.5s ease-in-out infinite;
+}
+
+@keyframes portal-stars-twinkle {
+  0%, 100% { opacity: 0.85; }
+  50%      { opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-stars-desktop { animation: none; }
+}
+
+@keyframes tour-glow {
+  0%, 100% {
+    box-shadow:
+      0 0 0 4px hsl(var(--primary) / 0.35),
+      0 0 30px 4px hsl(var(--primary) / 0.65),
+      0 0 60px 10px hsl(var(--primary) / 0.45),
+      inset 0 0 30px 4px hsl(var(--primary) / 0.35);
+    opacity: 0.9;
+    backdrop-filter: brightness(1.25) saturate(1.2);
+    -webkit-backdrop-filter: brightness(1.25) saturate(1.2);
+  }
+  50% {
+    box-shadow:
+      0 0 0 6px hsl(var(--primary) / 0.55),
+      0 0 60px 12px hsl(var(--primary) / 0.95),
+      0 0 110px 22px hsl(var(--primary) / 0.7),
+      inset 0 0 60px 10px hsl(var(--primary) / 0.6);
+    opacity: 1;
+    backdrop-filter: brightness(1.6) saturate(1.5);
+    -webkit-backdrop-filter: brightness(1.6) saturate(1.5);
+  }
+}
+
+@keyframes tour-glow-outline {
+  0%, 100% {
+    box-shadow:
+      0 0 0 3px hsl(var(--primary) / 0.55),
+      0 0 18px 2px hsl(var(--primary) / 0.55);
+    opacity: 0.9;
+  }
+  50% {
+    box-shadow:
+      0 0 0 4px hsl(var(--primary) / 0.85),
+      0 0 28px 4px hsl(var(--primary) / 0.85);
+    opacity: 1;
+  }
+}
+
+@keyframes tour-glyph-pulse {
+  0%, 100% {
+    background: radial-gradient(circle, hsl(217 90% 75% / 0.35) 0%, hsl(217 90% 60% / 0.18) 55%, transparent 82%);
+    box-shadow:
+      0 0 14px hsl(217 90% 60% / 0.55),
+      inset 0 0 10px hsl(217 90% 80% / 0.4);
+    transform: scale(1.05);
+  }
+  50% {
+    background: radial-gradient(circle, hsl(217 90% 80% / 0.75) 0%, hsl(217 90% 55% / 0.4) 60%, transparent 88%);
+    box-shadow:
+      0 0 28px hsl(217 90% 60% / 1),
+      inset 0 0 18px hsl(217 90% 85% / 0.8);
+    transform: scale(1.18);
+  }
+}
+
+body.tour-glyphs-glow .portal-glyph-key:not(.is-selected) {
+  animation: tour-glyph-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes portal-click-hint-bob {
+  0%, 100% { opacity: 0.9; }
+  50% { opacity: 1; }
+}
+.portal-click-hint {
+  animation: portal-click-hint-bob 1.4s ease-in-out infinite;
+  display: none !important;
+}
+
+
+
+
+/* Hide the portal Guide button on mobile while the navbar sheet menu is open */
+@media (max-width: 767px) {
+  body[data-scroll-locked] .portal-tour-help-btn {
+    display: none !important;
+  }
+}
+
+/* Arabic: enlarge the "select 3 symbols" prompt across all viewports */
+html[lang="ar"] .portal-select-more-text {
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+@media (min-width: 640px) {
+  html[lang="ar"] .portal-select-more-text {
+    font-size: 1.2rem;
+  }
+}
+
+
+/* Hide the instruction pill and the 0/3 counter while the portal tour is open. */
+body.tour-open .portal-instruction-pill,
+body.tour-open [data-tour="counter"] {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+/* ---------------- Fireworks (Hero) — scattered twinkling points ---------------- */
+.fw-point {
+  position: absolute;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    hsl(var(--fw-hue) 100% 92% / 1) 0%,
+    hsl(var(--fw-hue) 100% 65% / 0.9) 45%,
+    hsl(var(--fw-hue) 100% 55% / 0) 100%
+  );
+  box-shadow:
+    0 0 6px hsl(var(--fw-hue) 100% 70% / 0.9),
+    0 0 12px hsl(var(--fw-hue) 100% 55% / 0.5);
+  opacity: 0;
+  animation-name: fw-twinkle;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+@keyframes fw-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fw-point { animation: none; opacity: 0; }
+}
+
+/* ---------- Premium mobile coin rain (3D flip + sparkle) ---------- */
+.coin-rain-fall {
+  display: inline-block;
+  animation: coin-rain-fall cubic-bezier(0.55, 0.05, 0.55, 1) infinite;
+  filter:
+    drop-shadow(0 3px 5px hsl(35 80% 20% / 0.55))
+    drop-shadow(0 0 10px hsl(48 100% 65% / 0.55));
+  will-change: transform, opacity;
+}
+.coin-rain-flip {
+  display: inline-block;
+  transform-style: preserve-3d;
+  animation: coin-rain-flip linear infinite;
+  will-change: transform;
+}
+.coin-rain-sparkle {
+  position: absolute;
+  top: 6px;
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: radial-gradient(circle, #fff 0%, rgba(255,255,255,0.85) 40%, transparent 70%);
+  opacity: 0;
+  animation: coin-rain-sparkle 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes coin-rain-fall {
+  0%   { transform: translate3d(0, -14vh, 0) scale(0.85); opacity: 0; }
+  12%  { opacity: 1; }
+  50%  { transform: translate3d(var(--drift, 0px), 10vh, 0) scale(1); }
+  88%  { opacity: 1; }
+  100% { transform: translate3d(0, 24vh, 0) scale(0.9); opacity: 0; }
+}
+@keyframes coin-rain-flip {
+  0%   { transform: rotateY(0deg)   rotateZ(-6deg); }
+  50%  { transform: rotateY(180deg) rotateZ(6deg); }
+  100% { transform: rotateY(360deg) rotateZ(-6deg); }
+}
+@keyframes coin-rain-sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.6); }
+  45%      { opacity: 0.95; transform: scale(1.2); }
+  60%      { opacity: 0; transform: scale(0.8); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .coin-rain-fall, .coin-rain-flip, .coin-rain-sparkle, .coin-float { animation: none; }
+}
+
+/* Desktop floating coins — gentle vertical bob with subtle drift */
+.coin-float {
+  display: inline-block;
+  animation: coin-float ease-in-out infinite;
+  filter:
+    drop-shadow(0 6px 10px hsl(35 80% 15% / 0.45))
+    drop-shadow(0 0 14px hsl(48 100% 65% / 0.5));
+  will-change: transform;
+}
+@keyframes coin-float {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  25%      { transform: translate3d(-6px, -10px, 0); }
+  50%      { transform: translate3d(4px, -18px, 0); }
+  75%      { transform: translate3d(-3px, -8px, 0); }
+}
+
+/* Visible custom scrollbar for scrollable dialogs (Terms & Conditions) */
+.scrollbar-visible {
+  scrollbar-width: 10px;
+  scrollbar-color: hsl(var(--primary) / 0.7) hsl(var(--muted) / 0.4);
+  -webkit-overflow-scrolling: touch;
+}
+.scrollbar-visible::-webkit-scrollbar {
+  width: 10px;
+  -webkit-appearance: none;
+}
+.scrollbar-visible::-webkit-scrollbar-track {
+  background: hsl(var(--muted) / 0.4);
+  border-radius: 9999px;
+}
+.scrollbar-visible::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary) / 0.7);
+  border-radius: 9999px;
+  border: 2px solid hsl(var(--muted) / 0.4);
+}
+.scrollbar-visible::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary) / 0.9);
+}
+
+/* Hide scrollbars while keeping content scrollable (used in iframe popups) */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Mobile Portal coin float — subtle aspiration toward the Stargate */
+@keyframes coin-float-a {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(-6px, -10px, 0) rotate(-6deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+@keyframes coin-float-b {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(8px, -6px, 0) rotate(8deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+@keyframes coin-float-c {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%  { transform: translate3d(-4px, 8px, 0) rotate(4deg); }
+  100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+}
+@keyframes coin-trail-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.75; transform: scale(1.35); }
+}
+@keyframes coin-spark {
+  0%   { opacity: 0; transform: translate3d(0, 0, 0) scale(0.4); }
+  40%  { opacity: 1; }
+  100% { opacity: 0; transform: translate3d(var(--sx, -10px), var(--sy, -14px), 0) scale(0.2); }
+}
+
+/* ===== Ported from Lovable export — nouveaux types de question + habillage ===== */
+
+/* ===== « Reconnais le son » : platine vinyle ===== */
+.sound-deck {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--quiz-category-color) / 0.55);
+  background:
+    radial-gradient(circle at 22% 45%, var(--sound-primary, hsl(var(--primary) / 0.25)), transparent 55%),
+    hsl(var(--background) / 0.45);
+  overflow: hidden;
+}
+
+.sound-deck__disc {
+  position: relative;
+  flex: 0 0 auto;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 9999px;
+  background:
+    repeating-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 5px),
+    radial-gradient(circle at 50% 50%, #2b2b33 0 22%, #14141a 23% 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
+    0 10px 30px rgba(0, 0, 0, 0.45),
+    0 0 28px var(--sound-accent, hsl(var(--accent) / 0.5));
+  animation: sound-disc-spin 3.2s linear infinite;
+  animation-play-state: paused;
+}
+
+.sound-deck.is-playing .sound-deck__disc {
+  animation-play-state: running;
+}
+
+.sound-deck__disc::before {
+  content: "";
+  position: absolute;
+  inset: 33%;
+  border-radius: 9999px;
+  background: var(--sound-accent, hsl(var(--accent)));
+  box-shadow: 0 0 18px var(--sound-accent, hsl(var(--accent)));
+}
+
+.sound-deck__disc::after {
+  content: "";
+  position: absolute;
+  inset: 47%;
+  border-radius: 9999px;
+  background: hsl(var(--background));
+}
+
+.sound-deck__shine {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.18) 50%, transparent 65%);
+  pointer-events: none;
+}
+
+.sound-deck__side {
+  min-width: 0;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.sound-deck__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.sound-deck__wave {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 2.25rem;
+}
+
+.sound-deck__wave span {
+  flex: 1 1 0;
+  min-width: 2px;
+  border-radius: 2px;
+  background: var(--sound-accent, hsl(var(--accent)));
+  opacity: 0.45;
+  height: 22%;
+}
+
+.sound-deck.is-playing .sound-deck__wave span {
+  animation: sound-wave-bounce 0.9s ease-in-out infinite;
+  opacity: 0.95;
+}
+
+@media (max-width: 640px) {
+  .sound-deck {
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .sound-deck__disc {
+    width: 6.25rem;
+    height: 6.25rem;
+  }
+
+  .sound-deck__side {
+    width: 100%;
+  }
+}
+
+@keyframes sound-disc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sound-wave-bounce {
+  0%, 100% {
+    height: 25%;
+  }
+  50% {
+    height: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sound-deck.is-playing .sound-deck__disc,
+  .sound-deck.is-playing .sound-deck__wave span {
+    animation: none;
+  }
+}
+
+/* ===== « Qui suis-je ? » : cartes d'indices en orbite ===== */
+.whoami-orbit {
+  position: relative;
+  min-height: 13.5rem;
+  isolation: isolate;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid hsl(var(--quiz-category-color) / 0.55);
+  border-radius: var(--radius);
+  --quiz-card-glass:
+    radial-gradient(circle at 50% 55%, hsl(var(--accent) / 0.18), transparent 28%),
+    radial-gradient(circle at 50% 45%, hsl(var(--primary) / 0.16), transparent 60%),
+    hsl(var(--background) / 0.42);
+  background: var(--quiz-card-glass);
+}
+
+.whoami-orbit__rings,
+.whoami-orbit__core,
+.whoami-orbit__platform {
+  pointer-events: none;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.whoami-orbit__rings {
+  width: min(94%, 30rem);
+  aspect-ratio: 3.4 / 1;
+  border: 1px solid color-mix(in srgb, hsl(var(--quiz-category-color)) 24%, transparent);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) rotate(-4deg);
+  box-shadow: 0 0 24px color-mix(in srgb, hsl(var(--quiz-category-color)) 16%, transparent);
+}
+
+.whoami-orbit__rings span {
+  position: absolute;
+  inset: 16%;
+  border: 1px solid color-mix(in srgb, hsl(var(--quiz-category-color)) 30%, transparent);
+  border-radius: inherit;
+  animation: whoami-ring-pulse 2.5s ease-in-out infinite;
+}
+
+.whoami-orbit__rings span + span {
+  inset: 32%;
+  animation-delay: -1.6s;
+}
+
+.whoami-orbit__core {
+  width: 4.5rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--whoami-accent) 26%, transparent);
+  filter: blur(24px);
+  animation: whoami-core-pulse 1.8s ease-in-out infinite;
+}
+
+.whoami-orbit__card {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: min(62%, 18rem);
+  min-height: 8.5rem;
+  padding: 0.75rem 0.9rem 0.6rem;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, hsl(var(--quiz-category-color)) 40%, transparent);
+  border-radius: calc(var(--radius) - 0.5rem);
+  background: linear-gradient(155deg, hsl(var(--card) / 0.58), hsl(var(--background) / 0.34));
+  color: hsl(var(--foreground));
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 18px color-mix(in srgb, hsl(var(--quiz-category-color)) 14%, transparent);
+  transition: transform 400ms cubic-bezier(.2,.85,.25,1), opacity 400ms ease;
+}
+
+/* Paquet frontal : carte active au centre, autres cartes derrière sur les côtés */
+.whoami-orbit__card p { display: none; }
+.whoami-orbit__card.is-before {
+  z-index: 2;
+  transform: translate(-50%, -50%) translateX(-72%) scale(0.88);
+  opacity: 0.48;
+}
+.whoami-orbit__card.is-after {
+  z-index: 2;
+  transform: translate(-50%, -50%) translateX(72%) scale(0.88);
+  opacity: 0.48;
+}
+.whoami-orbit__card--1.is-before,
+.whoami-orbit__card--3.is-after { z-index: 1; }
+
+.whoami-orbit__card.is-active {
+  z-index: 5;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  border-color: color-mix(in srgb, hsl(var(--quiz-category-color)) 85%, transparent);
+  box-shadow: inset 0 0 28px color-mix(in srgb, hsl(var(--quiz-category-color)) 18%, transparent), 0 0 30px color-mix(in srgb, hsl(var(--quiz-category-color)) 30%, transparent);
+  animation: whoami-card-arrive 400ms cubic-bezier(.2,.85,.25,1) both;
+}
+
+.whoami-orbit__card.is-active p { display: block; }
+
+.whoami-orbit__card-head { display: flex; align-items: center; justify-content: space-between; color: var(--whoami-accent); font-size: 0.55rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.14em; }
+.whoami-orbit__signal { width: 0.35rem; height: 0.35rem; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; animation: pulse 1.6s ease-in-out infinite; }
+.whoami-orbit__label { margin: 0.35rem auto 0.45rem; display: block; width: fit-content; max-width: 100%; color: hsl(var(--quiz-category-color)); font-size: clamp(0.82rem, 2.6vw, 0.98rem); font-weight: 900; letter-spacing: 0.1em; line-height: 1.1; text-align: center; text-transform: capitalize; text-shadow: 0 0 14px color-mix(in srgb, hsl(var(--quiz-category-color)) 45%, transparent); }
+.whoami-orbit__card p { margin: 0; text-align: center; font-size: clamp(0.82rem, 2.4vw, 0.95rem); font-weight: 650; line-height: 1.3; }
+.whoami-orbit__scan { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, transparent 40%, color-mix(in srgb, var(--whoami-accent) 18%, transparent) 50%, transparent 60%); transform: translateY(-100%); animation: whoami-scan 2.5s linear infinite; }
+
+.whoami-orbit__platform {
+  top: 84%;
+  width: min(66%, 20rem);
+  height: 1.8rem;
+  border: 2px solid color-mix(in srgb, hsl(var(--quiz-category-color)) 42%, transparent);
+  border-radius: 50%;
+  box-shadow: inset 0 0 20px color-mix(in srgb, hsl(var(--quiz-category-color)) 22%, transparent);
+}
+.whoami-orbit__platform span { position: absolute; inset: 26%; border-radius: inherit; border: 1px solid color-mix(in srgb, hsl(var(--quiz-category-color)) 52%, transparent); }
+.whoami-orbit__bonus { position: absolute; z-index: 7; bottom: 0.3rem; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; gap: 0.4rem; width: max-content; max-width: calc(100% - 1.5rem); color: hsl(var(--quiz-speed-bonus)); font-size: clamp(0.9rem, 3vw, 1.05rem); font-weight: 900; letter-spacing: 0.02em; text-align: center; text-shadow: 0 1px 10px hsl(var(--quiz-speed-bonus) / 0.35); }
+
+@keyframes whoami-card-arrive { from { opacity: 0.48; transform: translate(-50%, -50%) translateX(72%) scale(0.88); filter: blur(2px); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); filter: blur(0); } }
+@keyframes whoami-scan { 0% { transform: translateY(-100%); } 55%, 100% { transform: translateY(100%); } }
+@keyframes whoami-ring-pulse { 0%, 100% { opacity: 0.35; transform: scale(0.96); } 50% { opacity: 0.85; transform: scale(1.04); } }
+@keyframes whoami-core-pulse { 0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.85); } 50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); } }
+
+@media (max-width: 639px) {
+  .whoami-orbit { min-height: 12rem; }
+  .whoami-orbit__card { width: min(78%, 15rem); min-height: 7.5rem; padding: 0.6rem 0.7rem 0.5rem; }
+  .whoami-orbit__card.is-before { transform: translate(-50%, -50%) translateX(-68%) scale(0.86); }
+  .whoami-orbit__card.is-after { transform: translate(-50%, -50%) translateX(68%) scale(0.86); }
+  .whoami-orbit__platform { top: 86%; height: 1.4rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .whoami-orbit__rings span,
+  .whoami-orbit__core,
+  .whoami-orbit__signal,
+  .whoami-orbit__scan,
+  .whoami-orbit__card.is-active { animation: none; }
+}
+
+/* ===== Points flash (+500 / +50) ===== */
+.points-flash {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: points-flash-fade 2.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.points-flash__pill {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 1.6rem;
+  border-radius: 9999px;
+  font-size: clamp(2.2rem, 8vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  backdrop-filter: blur(10px);
+  border: 2px solid currentColor;
+  box-shadow:
+    0 0 40px currentColor,
+    0 20px 60px rgba(0, 0, 0, 0.45),
+    inset 0 0 20px rgba(255, 255, 255, 0.12);
+  animation: points-flash-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.points-flash--correct .points-flash__pill {
+  color: hsl(158 70% 52%);
+  background: hsl(158 70% 18% / 0.55);
+}
+
+.points-flash--wrong .points-flash__pill {
+  color: hsl(0 85% 58%);
+  background: hsl(0 75% 20% / 0.55);
+}
+
+.points-flash__icon {
+  width: 1em;
+  height: 1em;
+  stroke-width: 3;
+}
+
+@keyframes points-flash-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.35) translateY(40px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08) translateY(-8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes points-flash-fade {
+  0%, 76% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .points-flash,
+  .points-flash__pill {
+    animation: none;
+  }
+}
+
+/* DHD-inspired glyph keyboard: weathered stone/metal from the Abydos scene,
+   edged with the same cyan energy and warm chevron light as the Stargate. */
+.portal-glyph-keyboard {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid hsl(var(--gold) / 0.52);
+  border-radius: 0.55rem;
+  background:
+    radial-gradient(ellipse at 50% -18%, hsl(var(--cyan) / 0.2), transparent 54%),
+    repeating-linear-gradient(96deg, transparent 0 19px, hsl(var(--foreground) / 0.018) 20px 21px),
+    linear-gradient(138deg, hsl(var(--gold) / 0.12), transparent 30%, hsl(var(--cyan) / 0.05) 68%, transparent),
+    linear-gradient(180deg, hsl(var(--card) / 0.62), hsl(var(--background) / 0.72));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--gold) / 0.36),
+    inset 0 0 0 3px hsl(var(--background) / 0.34),
+    inset 0 -10px 20px hsl(var(--background) / 0.5),
+    0 0 0 1px hsl(var(--background) / 0.7),
+    0 12px 30px hsl(var(--background) / 0.54),
+    0 0 24px hsl(var(--cyan) / 0.18);
+  backdrop-filter: blur(8px) saturate(0.78);
+  -webkit-backdrop-filter: blur(8px) saturate(0.78);
+}
+
+.portal-glyph-keyboard::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid hsl(var(--cyan) / 0.22);
+  border-radius: 0.35rem;
+  background:
+    repeating-linear-gradient(108deg, transparent 0 13px, hsl(var(--gold) / 0.035) 14px 15px),
+    radial-gradient(circle at 18% 34%, hsl(var(--gold) / 0.12) 0 1px, transparent 2px),
+    radial-gradient(circle at 76% 68%, hsl(var(--gold) / 0.1) 0 1px, transparent 2px),
+    linear-gradient(90deg, hsl(var(--background) / 0.18), transparent 16% 84%, hsl(var(--background) / 0.18));
+}
+
+.portal-glyph-keyboard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent 5%, hsl(var(--cyan) / 0.18) 50%, transparent 95%),
+    linear-gradient(180deg, hsl(var(--foreground) / 0.05), transparent 24% 78%, hsl(var(--background) / 0.2));
+  opacity: 0.62;
+}
+
+.portal-glyph-key {
+  overflow: hidden;
+  border: 1px solid hsl(var(--gold) / 0.38);
+  border-radius: 0.2rem;
+  background:
+    radial-gradient(circle at 50% 38%, hsl(var(--cyan) / 0.1), transparent 62%),
+    linear-gradient(145deg, hsl(var(--foreground) / 0.1), transparent 38%),
+    linear-gradient(315deg, hsl(var(--gold) / 0.07), hsl(var(--background) / 0.48));
+  box-shadow:
+    inset 0 1px 0 hsl(var(--foreground) / 0.12),
+    inset 0 0 0 1px hsl(var(--background) / 0.25),
+    inset 0 -4px 6px hsl(var(--background) / 0.52);
+  transition: transform 150ms ease, border-color 180ms ease, background 180ms ease, box-shadow 180ms ease;
+}
+
+.portal-glyph-key:not(:disabled):hover,
+.portal-glyph-key:focus-visible {
+  border-color: hsl(var(--cyan) / 0.9);
+  background:
+    radial-gradient(circle, hsl(var(--cyan) / 0.3), transparent 70%),
+    linear-gradient(145deg, hsl(var(--foreground) / 0.1), hsl(var(--background) / 0.46));
+  box-shadow:
+    inset 0 0 9px hsl(var(--cyan) / 0.3),
+    0 0 5px hsl(var(--cyan) / 0.68),
+    0 0 14px hsl(var(--cyan) / 0.38);
+  outline: none;
+}
+
+/* Selected keys keep the exact cyan "touched" frame — no gold accent. */
+.portal-glyph-key.is-selected {
+  border-color: hsl(var(--cyan) / 0.9);
+  background:
+    radial-gradient(circle, hsl(var(--cyan) / 0.3), transparent 70%),
+    linear-gradient(145deg, hsl(var(--foreground) / 0.1), hsl(var(--background) / 0.46));
+  box-shadow:
+    inset 0 0 9px hsl(var(--cyan) / 0.3),
+    0 0 5px hsl(var(--cyan) / 0.68),
+    0 0 14px hsl(var(--cyan) / 0.38);
+}
+
+.portal-glyph-key__symbol {
+  display: block;
+  background-repeat: no-repeat;
+  background-size: 3900% 100%;
+  opacity: 0.9;
+  filter: brightness(0) invert(1) sepia(0.18);
+  transition: filter 180ms ease, opacity 180ms ease;
+}
+
+.portal-glyph-key.is-selected .portal-glyph-key__symbol {
+  opacity: 1;
+  filter:
+    brightness(0) invert(1)
+    drop-shadow(0 0 3px hsl(var(--foreground) / 0.9))
+    drop-shadow(0 0 6px hsl(var(--cyan)))
+    drop-shadow(0 0 13px hsl(var(--cyan) / 0.74));
+}
+
+/* First-visit hint: a small hand icon that steps through the glyph keyboard
+   in visual order, nudging the player to tap a symbol. Shown only while idle
+   with nothing selected yet (see GlyphKeyboard.tsx `showEntryHint`). Lives on
+   whichever key is currently hinted, so the key must allow it to overflow
+   its own rounded-corner clipping. */
+.portal-glyph-key.is-hinted {
+  overflow: visible;
+}
+.portal-glyph-key__hint-hand {
+  position: absolute;
+  /* cursor-hand.png has large transparent padding — the fingertip sits at
+     ~47% across / ~37% down within the square canvas, not at the image's
+     own center/edge. The offsets below account for that so the fingertip
+     itself (not the image box) lands centered on the key's symbol. */
+  top: -0.7rem;
+  left: 50%;
+  z-index: 6;
+  width: 4.2rem;
+  height: 4.2rem;
+  pointer-events: none;
+  animation: portal-glyph-key-hint-bob 1.1s ease-in-out infinite;
+}
+.portal-glyph-key__hint-hand img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
+}
+@keyframes portal-glyph-key-hint-bob {
+  0%, 100% { transform: translate(-47%, 0); opacity: 0.85; }
+  50% { transform: translate(-47%, 4px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .portal-glyph-key__hint-hand { animation: none; }
+}
+
+/* ============================================================
+   Univers commun « Abydos » des missions du quiz
+   Décor partagé : désert ouvert après le passage de la Porte.
+   Seules de discrètes variations changent selon la catégorie.
+   ============================================================ */
+.quiz-abydos {
+  --abydos-sand: 36 62% 62%;
+  --abydos-gold: 40 90% 60%;
+  --abydos-glow: 188 90% 60%;
+  --abydos-scene-opacity: 1;
+}
+
+/* Arrivée : court flash bleu/blanc du vortex puis fondu vers le décor */
+.quiz-abydos__arrival {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 42%, hsl(0 0% 100% / 0.85), transparent 42%),
+    radial-gradient(circle at 50% 42%, hsl(var(--abydos-glow) / 0.85), transparent 70%),
+    hsl(210 80% 22% / 0.9);
+  animation: abydos-arrival 900ms ease-out forwards;
+}
+@keyframes abydos-arrival {
+  0% { opacity: 1; transform: scale(1.08); }
+  60% { opacity: 0.35; }
+  100% { opacity: 0; transform: scale(1); visibility: hidden; }
+}
+
+.quiz-abydos__wash {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 12%, hsl(var(--abydos-gold) / 0.02), transparent 58%),
+    radial-gradient(ellipse at 50% 100%, hsl(28 45% 8% / 0.12), transparent 70%),
+    radial-gradient(ellipse at 50% 46%, hsl(250 45% 8% / 0.10), hsl(250 45% 8% / 0.02) 66%, transparent 88%),
+    linear-gradient(180deg, hsl(250 45% 12% / 0.04), hsl(26 40% 8% / 0.08));
+}
+
+.quiz-abydos__torch {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 8% 26%, hsl(32 100% 62% / 0.16), transparent 34%),
+    radial-gradient(circle at 92% 32%, hsl(32 100% 62% / 0.13), transparent 34%);
+  animation: abydos-torch 6.5s ease-in-out infinite;
+}
+@keyframes abydos-torch {
+  0%, 100% { opacity: 0.75; }
+  50% { opacity: 1; }
+}
+
+.quiz-abydos__dust {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.quiz-abydos__dust span {
+  position: absolute;
+  bottom: -6vh;
+  width: 3px;
+  height: 3px;
+  border-radius: 9999px;
+  background: hsl(var(--abydos-sand) / 0.55);
+  filter: blur(0.5px);
+  animation-name: abydos-dust;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+@keyframes abydos-dust {
+  0% { transform: translate3d(0, 0, 0); opacity: 0; }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.5; }
+  100% { transform: translate3d(6vw, -108vh, 0); opacity: 0; }
+}
+
+/* Activation de la Porte : brève lueur de glyphes au début de chaque question */
+.quiz-abydos__activate {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 18%, hsl(var(--abydos-glow) / 0.4), transparent 45%),
+    radial-gradient(circle at 50% 18%, hsl(var(--abydos-gold) / 0.28), transparent 62%);
+  animation: abydos-activate 900ms ease-out forwards;
+}
+@keyframes abydos-activate {
+  0% { opacity: 0; transform: scale(1.06); }
+  35% { opacity: 1; }
+  100% { opacity: 0; transform: scale(1); }
+}
+
+/* Panneau de question : transparent avec bordure gravée */
+.quiz-panel {
+  position: relative;
+  background: transparent !important;
+  border-color: hsl(var(--quiz-category-color)) !important;
+  box-shadow:
+    0 0 0 1px hsl(30 40% 30% / 0.25) inset,
+    0 24px 60px hsl(24 60% 2% / 0.45),
+    0 0 45px hsl(var(--quiz-category-color) / 0.14) !important;
+}
+.quiz-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image:
+    radial-gradient(hsl(36 40% 70% / 0.04) 1px, transparent 1px);
+  background-size: 4px 4px;
+  opacity: 0.35;
+}
+
+/* Réponses : pierre gravée, cible tactile confortable sur mobile */
+.quiz-answer {
+  min-height: 3.25rem;
+  background: linear-gradient(155deg, hsl(var(--card) / 0.58), hsl(var(--background) / 0.34));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-color: hsl(var(--quiz-category-color) / 0.45);
+  transition: transform 120ms ease-out, border-color 120ms ease-out, box-shadow 120ms ease-out, background 120ms ease-out;
+  touch-action: manipulation;
+}
+.quiz-answer--rtl {
+  background: linear-gradient(205deg, hsl(var(--card) / 0.58), hsl(var(--background) / 0.34));
+}
+.quiz-answer:hover {
+  border-color: hsl(var(--quiz-category-color) / 0.85);
+  box-shadow: 0 0 22px hsl(var(--quiz-category-color) / 0.35);
+}
+.quiz-answer:active {
+  transform: scale(0.96);
+  border-color: hsl(var(--quiz-category-color));
+  background: linear-gradient(155deg, hsl(var(--card) / 0.58), hsl(var(--background) / 0.34));
+  box-shadow:
+    0 0 8px hsl(var(--quiz-category-color) / 0.45),
+    0 0 28px hsl(var(--quiz-category-color) / 0.65),
+    0 0 52px hsl(var(--quiz-category-color) / 0.35);
+}
+.quiz-answer--rtl:active {
+  background: linear-gradient(205deg, hsl(var(--card) / 0.58), hsl(var(--background) / 0.34));
+}
+
+/* Après validation, ces états priment sur le bleu général et sur le survol. */
+.quiz-answer.quiz-answer--correct,
+.quiz-answer.quiz-answer--correct:hover,
+.quiz-answer.quiz-answer--correct:active {
+  border-color: hsl(var(--quiz-correct)) !important;
+  background: hsl(var(--quiz-correct-surface) / 0.72) !important;
+  box-shadow:
+    0 0 12px hsl(var(--quiz-correct) / 0.72),
+    0 0 32px hsl(var(--quiz-correct) / 0.5) !important;
+  transform: none;
+}
+.quiz-answer.quiz-answer--incorrect,
+.quiz-answer.quiz-answer--incorrect:hover,
+.quiz-answer.quiz-answer--incorrect:active {
+  border-color: hsl(var(--quiz-incorrect)) !important;
+  background: hsl(var(--quiz-incorrect-surface) / 0.76) !important;
+  box-shadow:
+    0 0 12px hsl(var(--quiz-incorrect) / 0.76),
+    0 0 32px hsl(var(--quiz-incorrect) / 0.52) !important;
+  transform: none;
+}
+.quiz-answer--correct .quiz-answer__letter {
+  border-color: hsl(var(--quiz-correct)) !important;
+  color: hsl(var(--quiz-correct));
+}
+.quiz-answer--incorrect .quiz-answer__letter {
+  border-color: hsl(var(--quiz-incorrect)) !important;
+  color: hsl(var(--quiz-incorrect));
+}
+
+/* Une mauvaise sélection révèle la bonne réponse avec une impulsion verte brève. */
+.quiz-answer.quiz-answer--correct-revealed {
+  animation: quiz-correct-reveal 760ms cubic-bezier(0.2, 0.85, 0.25, 1) both;
+}
+
+@keyframes quiz-correct-reveal {
+  0% {
+    transform: scale(0.985);
+    box-shadow: 0 0 0 hsl(var(--quiz-correct) / 0);
+  }
+  45% {
+    transform: scale(1.025);
+    box-shadow:
+      0 0 18px hsl(var(--quiz-correct) / 0.95),
+      0 0 46px hsl(var(--quiz-correct) / 0.72);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow:
+      0 0 12px hsl(var(--quiz-correct) / 0.72),
+      0 0 32px hsl(var(--quiz-correct) / 0.5);
+  }
+}
+
+/* Barre de progression des questions : reste bleue pour ne pas confondre avec le timer. */
+.quiz-category-progress > div {
+  background: hsl(var(--primary));
+}
+
+/* Cases du résultat : pierre légèrement voilée, tous les éléments restent lisibles
+   au-dessus du décor d'Abydos (identique sur ordinateur et mobile). */
+.quiz-result-card {
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, hsl(217 55% 13% / 0.5), hsl(220 65% 9% / 0.56));
+  background-clip: padding-box;
+  -webkit-backdrop-filter: blur(12px) saturate(1.05);
+  backdrop-filter: blur(12px) saturate(1.05);
+  box-shadow: 0 14px 34px hsl(220 90% 3% / 0.45);
+}
+
+/* Case « Niveau » du résultat : liseré, icône et chiffre reprennent le dégradé
+   doré du palier courant de l'échelle de progression. */
+.quiz-result-card--level {
+  position: relative;
+  border-color: transparent;
+}
+.quiz-result-card--level::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--gradient-gold);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.quiz-level-value {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.quiz-level-icon {
+  stroke: url(#quiz-gold-gradient);
+}
+
+/* Mobile uniquement : centre optiquement le nombre et « Niveau » dans la case. */
+@media (max-width: 640px) {
+  .quiz-result-card--level {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .quiz-result-card--level .quiz-level-value,
+  .quiz-result-card--level .quiz-level-label {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+/* Bandeau « Level Up » : liseré et texte reprennent le dégradé doré de la case de niveau. */
+.quiz-levelup-banner {
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+.quiz-levelup-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 2px;
+  background: var(--gradient-gold);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.quiz-levelup-text {
+  background: var(--gradient-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+.quiz-levelup-emoji {
+  color: inherit;
+  -webkit-text-fill-color: initial;
+}
+
+/* Pastilles récapitulatives : même bleu marine voilé, plus léger. */
+.quiz-result-pill {
+  background: linear-gradient(180deg, hsl(217 55% 13% / 0.42), hsl(220 65% 9% / 0.48));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+/* Cadre « Le saviez-vous » : verre miroir translucide et flou opaque. */
+.quiz-reveal-panel {
+  background:
+    linear-gradient(115deg, hsl(210 35% 96% / 0.16) 0%, hsl(216 36% 72% / 0.07) 34%, hsl(222 48% 8% / 0.28) 100%);
+  -webkit-backdrop-filter: blur(34px) saturate(0.82) brightness(0.58);
+  backdrop-filter: blur(34px) saturate(0.82) brightness(0.58);
+  box-shadow:
+    inset 0 1px 0 hsl(210 40% 98% / 0.28),
+    inset 0 -1px 0 hsl(220 45% 4% / 0.32),
+    0 0 18px hsl(var(--quiz-category-color) / 0.38),
+    0 0 40px hsl(var(--quiz-category-color) / 0.28),
+    0 0 68px hsl(var(--quiz-category-color) / 0.18),
+     0 14px 34px hsl(220 90% 3% / 0.5);
+}
+
+@media (min-width: 641px) {
+  .quiz-reveal-panel {
+    background:
+      linear-gradient(115deg,
+        hsl(28 30% 53% / 0.58) 0%,
+        hsl(28 29% 52% / 0.58) 50%,
+        hsl(28 30% 51% / 0.58) 100%);
+    -webkit-backdrop-filter: blur(34px) saturate(0.7) brightness(0.62);
+    backdrop-filter: blur(34px) saturate(0.7) brightness(0.62);
+  }
+}
+
+/* Torche du cadre « Le saviez-vous » : illustration + halo chaud de flamme antique. */
+.quiz-reveal-torch {
+  filter: drop-shadow(0 0 3px hsl(38 95% 62% / 0.75))
+    drop-shadow(0 0 9px hsl(28 90% 55% / 0.35))
+    drop-shadow(0 1px 1px hsl(20 60% 6% / 0.55));
+}
+
+/* Variations subtiles par mission (mêmes couleurs, décor différent) */
+.quiz-abydos--science { --abydos-glow: 190 95% 62%; }
+.quiz-abydos--sport { --abydos-sand: 35 68% 64%; }
+.quiz-abydos--history { --abydos-gold: 40 88% 58%; }
+.quiz-abydos--archeo { --abydos-sand: 34 70% 66%; }
+.quiz-abydos--ent { --abydos-glow: 194 92% 64%; }
+.quiz-abydos--art { --abydos-gold: 42 88% 62%; }
+
+@media (max-width: 640px) {
+  .quiz-abydos {
+    --abydos-scene-opacity: 1;
+  }
+  .quiz-abydos__scene { background-position: center center; }
+
+  .quiz-panel {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-abydos__torch,
+  .quiz-abydos__dust span,
+  .quiz-abydos__activate {
+    animation: none !important;
+  }
+  .quiz-abydos__activate { opacity: 0; }
+  .quiz-abydos__arrival { animation: none !important; opacity: 0; visibility: hidden; }
+}
+
+/* Bonus rapidité : couleur de récompense fixe, indépendante de la catégorie. */
+.quiz-speed-bonus-text {
+  color: hsl(var(--quiz-speed-bonus));
+}
+
+.quiz-speed-bonus {
+  color: hsl(var(--quiz-speed-bonus));
+  border-color: hsl(var(--quiz-speed-bonus));
+  background: hsl(var(--quiz-speed-bonus) / 0.13);
+  box-shadow: none;
+}
+
+/* Mobile uniquement : le bouton « Retour au portail » (flèche + texte), présent
+   dans l'en-tête des questions et du résultat, est décalé de 3 % vers l'extérieur
+   (la gauche en FR/EN, la droite en AR). Le web reste strictement inchangé. */
+@media (max-width: 767px) {
+  .quiz-portal-back {
+    margin-inline-start: -3%;
+  }
+}
+
+/* ── Fenêtres « S'inscrire » et « Mot de passe oublié ? » ─────────────────
+   Rappel des codes Tunisie Telecom : inscription = SMS gratuit « UP » au
+   85800 ou USSD *800*4# ; mot de passe oublié = SMS gratuit « PASS » au 85800.
+   Web et mobile, dans les trois langues. */
+.sms-modal {
+  border-color: hsl(var(--gold) / 0.34);
+  background:
+    radial-gradient(ellipse at 50% -22%, hsl(var(--cyan) / 0.12), transparent 56%),
+    linear-gradient(158deg, hsl(var(--card) / 0.97), hsl(var(--background) / 0.98));
+  box-shadow:
+    0 26px 64px -22px hsl(222 60% 3% / 0.85),
+    inset 0 0 0 1px hsl(var(--gold) / 0.08);
+}
+
+.sms-modal__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.15rem;
+  height: 2.15rem;
+  margin: 0 auto 0.4rem;
+  border-radius: 999px;
+  color: hsl(var(--gold-foreground));
+  background: var(--gradient-gold);
+  box-shadow: 0 0 18px hsl(var(--gold) / 0.34);
+}
+
+.sms-modal__intro {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: hsl(var(--foreground) / 0.92);
+}
+
+.sms-inline-code {
+  padding: 0 0.3rem;
+  border-radius: 0.32rem;
+  color: hsl(var(--cyan));
+  background: hsl(var(--cyan) / 0.1);
+  box-shadow: inset 0 0 0 1px hsl(var(--cyan) / 0.28);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Cadres à copier : UP / 85800 / *800*4# (inscription) et PASS / 85800 (mot de
+   passe oublié). Un cadre = un code, un toucher = une copie. */
+.sms-copy-frames {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.55rem;
+}
+
+.sms-copy-frame {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28rem;
+  padding: 0.6rem 0.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid hsl(var(--gold) / 0.3);
+  background: linear-gradient(
+    150deg,
+    hsl(var(--background) / 0.72),
+    hsl(var(--card) / 0.5)
+  );
+  box-shadow: inset 0 1px 0 hsl(var(--gold) / 0.12);
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.sms-copy-frame--wide {
+  grid-column: 1 / -1;
+}
+
+.sms-copy-frame:hover,
+.sms-copy-frame:focus-visible {
+  border-color: hsl(var(--cyan) / 0.55);
+  box-shadow: 0 0 16px hsl(var(--cyan) / 0.22);
+  outline: none;
+}
+
+.sms-copy-frame:active {
+  transform: translateY(1px);
+}
+
+.sms-copy-frame__value {
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1.15;
+  white-space: nowrap;
+}
+
+.sms-copy-frame--gold .sms-copy-frame__value {
+  color: hsl(var(--gold));
+}
+
+.sms-copy-frame--cyan .sms-copy-frame__value {
+  color: hsl(var(--cyan));
+}
+
+.sms-copy-frame__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: hsl(var(--muted-foreground));
+}
+
+.sms-copy-frame.is-copied {
+  border-color: hsl(var(--cyan) / 0.6);
+}
+
+.sms-copy-frame.is-copied .sms-copy-frame__action {
+  color: hsl(var(--cyan));
+}
+
+@media (max-width: 360px) {
+  .sms-copy-frames {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Chronological Puzzle — four stable Stargate archive tiles */
+.quiz-puzzle {
+  display: grid;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.quiz-puzzle__hint {
+  margin: -0.2rem 0 0;
+  color: hsl(var(--foreground) / 0.78);
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.quiz-puzzle__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  direction: ltr;
+}
+
+.quiz-puzzle__tile {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  border: 2px solid hsl(var(--quiz-category-color) / 0.58);
+  border-radius: 0.5rem;
+  background: linear-gradient(150deg, hsl(var(--card) / 0.74), hsl(var(--background) / 0.84));
+  box-shadow: inset 0 0 0 1px hsl(var(--foreground) / 0.06);
+  touch-action: none;
+  user-select: none;
+  cursor: grab;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.quiz-puzzle__tile.is-selected,
+.quiz-puzzle__tile.is-dragging {
+  border-color: hsl(var(--quiz-category-color));
+  box-shadow: 0 0 0 3px hsl(var(--quiz-category-color) / 0.24), 0 0 22px hsl(var(--quiz-category-color) / 0.28);
+  transform: translateY(-2px);
+}
+
+.quiz-puzzle__tile.is-dragging { cursor: grabbing; }
+.quiz-puzzle__tile.is-correct { border-color: hsl(var(--quiz-correct)); box-shadow: 0 0 18px hsl(var(--quiz-correct) / 0.3); }
+.quiz-puzzle__tile.is-incorrect { border-color: hsl(var(--quiz-incorrect)); box-shadow: 0 0 18px hsl(var(--quiz-incorrect) / 0.25); }
+
+.quiz-puzzle__position {
+  position: absolute;
+  z-index: 3;
+  inset-block-start: 0.45rem;
+  inset-inline-start: 0.45rem;
+  display: grid;
+  width: 1.75rem;
+  height: 1.75rem;
+  place-items: center;
+  border: 1px solid hsl(var(--quiz-category-color) / 0.82);
+  border-radius: 50%;
+  background: hsl(var(--background) / 0.88);
+  color: hsl(var(--foreground));
+  font-size: 0.82rem;
+  font-weight: 900;
+  box-shadow: 0 0 12px hsl(var(--quiz-category-color) / 0.3);
+}
+
+.quiz-puzzle__image {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  border-bottom: 1px solid hsl(var(--quiz-category-color) / 0.36);
+}
+.quiz-puzzle__image--top-left { background-position: left top; }
+.quiz-puzzle__image--top-right { background-position: right top; }
+.quiz-puzzle__image--bottom-left { background-position: left bottom; }
+.quiz-puzzle__image--bottom-right { background-position: right bottom; }
+
+.quiz-puzzle__caption {
+  display: flex;
+  min-height: 3.35rem;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.55rem 0.5rem;
+  color: hsl(var(--foreground));
+  font-size: clamp(0.72rem, 1.3vw, 0.9rem);
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: start;
+}
+
+.quiz-puzzle__grip { width: 1rem; height: 1rem; flex: 0 0 auto; color: hsl(var(--quiz-category-color)); }
+.quiz-puzzle__moves { display: flex; justify-content: center; gap: 0.25rem; padding: 0 0.35rem 0.45rem; direction: ltr; }
+.quiz-puzzle__moves button { width: 2rem; height: 1.85rem; color: hsl(var(--foreground)); background: hsl(var(--foreground) / 0.07); }
+.quiz-puzzle__status { position: absolute; z-index: 3; inset-block-start: 0.55rem; inset-inline-end: 0.55rem; width: 1.45rem; height: 1.45rem; filter: drop-shadow(0 0 4px currentColor); }
+
+.quiz-puzzle__submit {
+  width: 100%;
+  border: 1px solid hsl(var(--quiz-category-color) / 0.72);
+  background: hsl(var(--quiz-category-color));
+  color: hsl(var(--primary-foreground));
+  font-weight: 900;
+}
+
+.quiz-puzzle__correct-order {
+  border: 1px solid hsl(var(--quiz-correct) / 0.58);
+  border-radius: 0.5rem;
+  background: hsl(var(--background) / 0.62);
+  padding: 0.8rem 1rem;
+  color: hsl(var(--foreground));
+  font-size: 0.85rem;
+  text-align: start;
+}
+.quiz-puzzle__correct-order ol { margin: 0.45rem 0 0; padding-inline-start: 1.25rem; list-style: decimal; }
+.quiz-puzzle__correct-order li + li { margin-top: 0.2rem; }
+
+@media (min-width: 768px) {
+  .quiz-puzzle__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .quiz-puzzle__image { aspect-ratio: 1 / 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quiz-puzzle__tile { transition: none; }
+}
+
+
+
+
