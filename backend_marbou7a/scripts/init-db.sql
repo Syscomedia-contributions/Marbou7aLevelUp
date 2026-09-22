@@ -1,0 +1,8 @@
+
+CREATE ROLE marbou7a_app WITH LOGIN PASSWORD '83yWkpyUmb2BXzDhAKkZsc';
+
+CREATE DATABASE marbou7a
+  OWNER marbou7a_app
+  ENCODING 'UTF8';
+
+GRANT ALL PRIVILEGES ON DATABASE marbou7a TO marbou7a_app;

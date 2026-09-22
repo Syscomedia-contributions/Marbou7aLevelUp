@@ -1,0 +1,7 @@
+node_modules
+.env
+*.log
+
+# Contains real user data (phone numbers, password hashes, OTP codes) —
+# never commit. Share out-of-band if a colleague needs it.
+dumps/marbou7a_full_backup.sql
