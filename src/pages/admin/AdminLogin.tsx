@@ -28,8 +28,8 @@ export default function AdminLogin() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const cleaned = phone.replace(/\s+/g, "");
-    if (!/^\d{8}$/.test(cleaned)) {
+    const cleaned = phone.replace(/[\s-]/g, "");
+    if (!/^(?:\+216|00216|216)?\d{8}$/.test(cleaned)) {
       setError(t("auth.errorPhone"));
       return;
     }
@@ -99,7 +99,7 @@ export default function AdminLogin() {
                 onChange={(e) => setPhone(e.target.value)}
                 className={`${inputPad} ${isRtl ? "text-right" : ""}`}
                 dir={isRtl ? "rtl" : undefined}
-                maxLength={12}
+                maxLength={16}
                 autoFocus
                 required
               />

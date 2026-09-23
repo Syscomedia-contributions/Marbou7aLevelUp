@@ -30,7 +30,7 @@ const RegisterForm = ({ onSuccess, onRequestLogin }: RegisterFormProps) => {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const cleanedPhone = phone.replace(/\s+/g, "");
+  const cleanedPhone = phone.replace(/[\s-]/g, "");
 
   const requestCode = async () => {
     setError(null);
@@ -49,7 +49,7 @@ const RegisterForm = ({ onSuccess, onRequestLogin }: RegisterFormProps) => {
 
   const handlePhoneSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!/^\d{8}$/.test(cleanedPhone)) {
+    if (!/^(?:\+216|00216|216)?\d{8}$/.test(cleanedPhone)) {
       setError(t("auth.errorPhone"));
       return;
     }
@@ -105,7 +105,7 @@ const RegisterForm = ({ onSuccess, onRequestLogin }: RegisterFormProps) => {
               onChange={(e) => setPhone(e.target.value)}
               className={`${inputPad} ${isRtl ? "text-right" : ""}`}
               dir={isRtl ? "rtl" : undefined}
-              maxLength={12}
+              maxLength={16}
               required
             />
           </div>

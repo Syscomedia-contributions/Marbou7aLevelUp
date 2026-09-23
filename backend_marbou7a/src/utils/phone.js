@@ -9,11 +9,19 @@ export function ttPrefixes() {
   return DEFAULT_TT_PREFIXES;
 }
 
-/** Strips spaces, dashes, and an optional +216/216/00216 country code. */
+/**
+ * Strips spaces and dashes. A leading 216, +216, or 00216 is removed only when
+ * 8 digits remain, so a local number that itself starts with 216 is kept.
+ */
 export function normalizePhone(raw) {
   if (typeof raw !== "string") return null;
   let cleaned = raw.replace(/[\s-]/g, "");
-  cleaned = cleaned.replace(/^\+?216/, "").replace(/^00216/, "");
+  if (cleaned.startsWith("+")) cleaned = cleaned.slice(1);
+  if (cleaned.startsWith("00216") && /^\d{8}$/.test(cleaned.slice(5))) {
+    cleaned = cleaned.slice(5);
+  } else if (cleaned.startsWith("216") && /^\d{8}$/.test(cleaned.slice(3))) {
+    cleaned = cleaned.slice(3);
+  }
   return cleaned;
 }
 

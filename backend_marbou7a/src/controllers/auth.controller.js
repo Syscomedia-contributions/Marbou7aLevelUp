@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { query } from "../config/db.js";
 import { asyncHandler } from "../middleware/errorHandler.js";
-import { normalizePhone, isValidTunisianMobile, isTunisieTelecomNumber } from "../utils/phone.js";
+import { normalizePhone, isValidTunisianMobile } from "../utils/phone.js";
 import { startOtp, verifyOtp } from "../services/otp.service.js";
 import { hashPassword, comparePassword, issueToken } from "../services/auth.service.js";
 
@@ -16,18 +16,9 @@ const registerVerifySchema = z.object({
 });
 const loginSchema = z.object({ phone: phoneSchema, password: passwordSchema });
 
-function requireTtNumber(phone) {
-  if (!isTunisieTelecomNumber(phone)) {
-    const err = new Error("Ce numéro ne semble pas être un numéro Tunisie Telecom.");
-    err.status = 422;
-    throw err;
-  }
-}
-
 export const registerStart = asyncHandler(async (req, res) => {
   const { phone: rawPhone } = registerStartSchema.parse(req.body);
   const phone = normalizePhone(rawPhone);
-  requireTtNumber(phone);
 
   const existing = await query("SELECT id FROM users WHERE phone = $1", [phone]);
   if (existing.rows.length > 0) {
@@ -43,7 +34,6 @@ export const registerStart = asyncHandler(async (req, res) => {
 export const registerVerify = asyncHandler(async (req, res) => {
   const { phone: rawPhone, code, password } = registerVerifySchema.parse(req.body);
   const phone = normalizePhone(rawPhone);
-  requireTtNumber(phone);
 
   const result = await verifyOtp(phone, "register", code);
   if (!result.valid) {
