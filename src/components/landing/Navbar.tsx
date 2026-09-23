@@ -151,13 +151,11 @@ const Navbar = () => {
             </div>
           </div>
         )}
-        {isHome && (
-          <img
-            src={logoTT}
-            alt="Tunisie Telecom"
-            className={`h-5 xs:h-7 sm:h-10 md:h-12 w-auto object-contain shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.25)] -ml-0.5 sm:ml-0 pointer-events-none select-none max-sm:scale-[1.14] -translate-y-[35%] ${brandingScrollCls}`}
-          />
-        )}
+        <img
+          src={logoTT}
+          alt="Tunisie Telecom"
+          className={`h-5 xs:h-7 sm:h-10 md:h-12 w-auto object-contain shrink-0 drop-shadow-[0_0_6px_rgba(255,255,255,0.25)] -ml-0.5 sm:ml-0 pointer-events-none select-none max-sm:scale-[1.14] ${brandingScrollCls} ${!isHome ? 'hidden lg:hidden' : ''} ${isHome ? '-translate-y-[35%]' : ''} ${i18n.language === 'fr' || i18n.language === 'en' ? '' : ''}`}
+        />
         {/* Single sidebar trigger (mobile + desktop): replaces TT logo on web (game pages only) */}
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <div className={`shrink-0 ${isHome ? 'hidden' : 'flex'} ${arGameShift}`}>
@@ -275,10 +273,10 @@ const Navbar = () => {
         <div dir="ltr" className={`flex flex-col items-center gap-0.5 font-bold min-w-0 pointer-events-none select-none ${lowerArabicGameLogoOnMobile ? 'max-sm:-translate-y-[8%]' : 'max-sm:-translate-y-[11%]'} max-sm:scale-[1.1025] max-sm:origin-left ${isHome ? (i18n.language === 'ar' ? ' sm:-translate-x-[35%] lg:translate-x-[188%] lg:translate-y-[70%] lg:scale-[67%]' : i18n.language === 'en' ? ' sm:-translate-x-[37%] lg:translate-x-[407%] lg:translate-y-[70%] lg:scale-[135%]' : i18n.language === 'fr' ? ' sm:-translate-x-[39%] lg:translate-x-[407%] lg:translate-y-[70%] lg:scale-[135%]' : ' sm:-translate-x-[35%]') : (i18n.language === 'ar' ? ' sm:-translate-x-[170%]' : i18n.language === 'fr' ? ' sm:-translate-x-[170%]' : ' sm:-translate-x-[180%]')} ${isHome ? 'invisible' : ''} ${arGameShift}`} aria-label="Marbou7a Level Up" aria-hidden={isHome || undefined}>
           <img
             src={i18n.language === "ar" ? marbou7aWordmarkAr : marbou7aWordmark}
-            className={`${isHome ? 'h-14 max-[360px]:h-11 xs:h-20 sm:h-20 md:h-24 lg:h-28 -my-1 xs:-my-2 sm:-my-6' : (i18n.language === 'ar' ? 'h-[20px] xs:h-[24px] sm:h-[36px] md:h-[45px] lg:h-[54px] -my-1 xs:-my-1 sm:-my-2' : 'h-14 xs:h-20 sm:h-20 md:h-24 lg:h-28 -my-1 xs:-my-2 sm:-my-4')} w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]`}
+            className={`${isHome ? 'h-14 max-[360px]:h-11 xs:h-20 sm:h-20 md:h-24 lg:h-28 -my-1 xs:-my-2 sm:-my-6' : (i18n.language === 'ar' ? 'h-[27px] xs:h-[31px] sm:h-[31px] md:h-[39px] lg:h-[47px] -my-1 xs:-my-1 sm:-my-2' : 'h-12 xs:h-16 sm:h-16 md:h-20 lg:h-24 -my-1 xs:-my-2 sm:-my-4')} w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]`}
             alt="Marbou7a"
           />
-          <span className={`text-wordmark-gradient font-wordmark ${isHome ? 'text-[11px] xs:text-[13px] sm:text-[19px] md:text-[20px] lg:text-[22px] -mt-4 xs:-mt-5 sm:-mt-6' : (i18n.language === 'ar' ? 'text-[9px] xs:text-[10px] sm:text-[17px] md:text-[18px] lg:text-[21px] -mt-2 xs:-mt-3 sm:-mt-3' : 'text-[12px] xs:text-[13px] sm:text-[18px] md:text-[19px] lg:text-[22px] -mt-3 xs:-mt-4 sm:-mt-5')} font-black tracking-[0.04em] xs:tracking-[0.05em] sm:tracking-[0.08em] uppercase whitespace-nowrap leading-none sm:leading-normal max-sm:[word-spacing:2%] sm:[word-spacing:-3px] ${isHome ? (i18n.language === 'ar' ? 'lg:translate-y-[160%] lg:translate-x-[6%] lg:scale-[190%]' : i18n.language === 'fr' || i18n.language === 'en' ? 'lg:translate-y-[17%] lg:translate-x-[6%]' : '') : (i18n.language === 'ar' ? `${lowerArabicCashOnMobile ? 'max-sm:translate-y-[13px]' : 'max-sm:translate-y-[3px]'} lg:translate-y-[16px]` : 'lg:translate-y-[2%]')}`}>
+          <span className={`text-wordmark-gradient font-wordmark ${isHome ? 'text-[11px] xs:text-[13px] sm:text-[19px] md:text-[20px] lg:text-[22px] -mt-4 xs:-mt-5 sm:-mt-6' : (i18n.language === 'ar' ? 'text-[11px] xs:text-[12px] sm:text-[15px] md:text-[16px] lg:text-[18px] -mt-2 xs:-mt-3 sm:-mt-3' : 'text-[10px] xs:text-[11px] sm:text-[16px] md:text-[17px] lg:text-[19px] -mt-3 xs:-mt-4 sm:-mt-5')} font-black tracking-[0.04em] xs:tracking-[0.05em] sm:tracking-[0.08em] uppercase whitespace-nowrap leading-none sm:leading-normal max-sm:[word-spacing:2%] sm:[word-spacing:-3px] ${isHome ? (i18n.language === 'ar' ? 'lg:translate-y-[160%] lg:translate-x-[6%] lg:scale-[190%]' : i18n.language === 'fr' || i18n.language === 'en' ? 'lg:translate-y-[17%] lg:translate-x-[6%]' : '') : (i18n.language === 'ar' ? `${lowerArabicCashOnMobile ? 'max-sm:translate-y-[13px]' : 'max-sm:translate-y-[3px]'} lg:translate-y-[16px]` : 'lg:translate-y-[2%]')}`}>
             CASH
           </span>
         </div>
@@ -291,7 +289,7 @@ const Navbar = () => {
         )}
         <HowToPlayDialog open={howToPlayOpen} onClose={() => setHowToPlayOpen(false)} />
         <div className={`flex items-center gap-1 xs:gap-2 shrink-0 [&_button]:max-xs:h-8 [&_button]:max-xs:px-2 [&_button]:max-xs:text-xs ${hideOnHome}`}>
-          <div className={`lg:hidden ${isHome ? '-translate-y-[35%]' : ''} ${isPortal ? '' : brandingScrollCls}`}>
+          <div className={`${isHome ? `lg:hidden -translate-y-[35%] ${brandingScrollCls}` : 'lg:hidden'} ${arGameShift}`}>
             <LanguageSwitcher />
           </div>
         </div>
@@ -302,7 +300,7 @@ const Navbar = () => {
               {t("nav.howToPlay")}
             </Button>
           )}
-          <div className={isPortal ? '' : brandingScrollCls}>
+          <div>
             <LanguageSwitcher />
           </div>
         </div>
