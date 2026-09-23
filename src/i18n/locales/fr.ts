@@ -217,7 +217,7 @@ const fr = {
       xp: "Progression XP",
     },
     ladderTitle: "Échelle de progression",
-    ladderSubtitle: "15 niveaux à franchir",
+    ladderSubtitle: "Classement",
     ladderLevel: "Niveau",
     ladderStart: "🚀 Début de l'aventure",
     ladderGrandJackpot: "Grand Jackpot",

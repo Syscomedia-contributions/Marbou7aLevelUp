@@ -217,7 +217,7 @@ const ar = {
       xp: "تقدم XP",
     },
     ladderTitle: "سلم التقدم",
-    ladderSubtitle: "15 درجة لاجتيازها",
+    ladderSubtitle: "التصنيف",
     ladderLevel: "المستوى",
     ladderStart: "🚀 بداية المغامرة",
     ladderGrandJackpot: "الجائزة الكبرى",

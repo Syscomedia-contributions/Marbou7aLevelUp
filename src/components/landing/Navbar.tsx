@@ -111,13 +111,13 @@ const Navbar = () => {
               alt="Tunisie Telecom"
               className="h-5 xs:h-7 sm:h-10 md:h-12 w-auto object-contain shrink-0 invisible -ml-0.5 sm:ml-0 max-sm:scale-[1.14] -translate-y-[35%]"
             />
-            <div dir="ltr" className={`flex flex-col items-center gap-0.5 font-bold min-w-0 pointer-events-none select-none max-sm:-translate-y-[11%] max-lg:hidden ${i18n.language === 'ar' ? ' sm:-translate-x-[37%] lg:translate-x-[calc(186%-60px)] lg:translate-y-[70%] lg:scale-[67%]' : i18n.language === 'en' ? ' sm:-translate-x-[39%] lg:translate-x-[calc(405%-60px)] lg:translate-y-[70%] lg:scale-[135%]' : i18n.language === 'fr' ? ' sm:-translate-x-[41%] lg:translate-x-[calc(405%-60px)] lg:translate-y-[70%] lg:scale-[135%]' : ' sm:-translate-x-[37%]'}`} aria-label="Marbou7a Level Up">
+            <div dir="ltr" className={`flex flex-col items-center gap-0.5 font-bold min-w-0 pointer-events-none select-none max-sm:-translate-y-[11%] max-lg:hidden ${i18n.language === 'ar' ? ' sm:-translate-x-[37%] lg:translate-x-[186%] lg:translate-y-[70%] lg:scale-[67%]' : i18n.language === 'en' ? ' sm:-translate-x-[39%] lg:translate-x-[405%] lg:translate-y-[70%] lg:scale-[135%]' : i18n.language === 'fr' ? ' sm:-translate-x-[41%] lg:translate-x-[405%] lg:translate-y-[70%] lg:scale-[135%]' : ' sm:-translate-x-[37%]'}`} aria-label="Marbou7a Level Up">
               <img
                 src={i18n.language === "ar" ? marbou7aWordmarkAr : marbou7aWordmark}
-                className="h-14 max-[360px]:h-11 xs:h-20 sm:h-20 md:h-24 lg:h-32 -my-1 xs:-my-2 sm:-my-6 w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]"
+                className="h-14 max-[360px]:h-11 xs:h-20 sm:h-20 md:h-24 lg:h-28 -my-1 xs:-my-2 sm:-my-6 w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]"
                 alt="Marbou7a"
               />
-              <span className={`text-wordmark-gradient font-wordmark text-[11px] xs:text-[13px] sm:text-[19px] md:text-[20px] lg:text-[25px] -mt-4 xs:-mt-5 sm:-mt-6 font-black tracking-[0.04em] xs:tracking-[0.05em] sm:tracking-[0.08em] uppercase whitespace-nowrap leading-none sm:leading-normal max-sm:[word-spacing:2%] sm:[word-spacing:-3px] ${i18n.language === 'ar' ? 'lg:translate-y-[160%] lg:translate-x-[6%] lg:scale-[190%]' : 'lg:translate-y-[17%] lg:translate-x-[6%]'}`}>
+              <span className={`text-wordmark-gradient font-wordmark text-[11px] xs:text-[13px] sm:text-[19px] md:text-[20px] lg:text-[22px] -mt-4 xs:-mt-5 sm:-mt-6 font-black tracking-[0.04em] xs:tracking-[0.05em] sm:tracking-[0.08em] uppercase whitespace-nowrap leading-none sm:leading-normal max-sm:[word-spacing:2%] sm:[word-spacing:-3px] ${i18n.language === 'ar' ? 'lg:translate-y-[160%] lg:translate-x-[6%] lg:scale-[190%]' : 'lg:translate-y-[17%] lg:translate-x-[6%]'}`}>
                 CASH
               </span>
             </div>

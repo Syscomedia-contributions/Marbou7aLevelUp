@@ -23,7 +23,6 @@ const buildTiers = (currentLevel: number, authed: boolean): Tier[] =>
 
 const Ladder = () => {
   const { t, i18n } = useTranslation();
-  const isFr = i18n.language.startsWith("fr");
   const isAr = i18n.language.startsWith("ar");
   const [currentLevel, setCurrentLevel] = useState(1);
   const [progressionLoaded, setProgressionLoaded] = useState(false);
@@ -136,15 +135,10 @@ const Ladder = () => {
                   {tier.safe && !tier.grand && <Star className="w-3 h-3 fill-current" />}
                 </div>
                 <div className="flex flex-col items-end leading-tight">
-                  <span
-                    className={`font-bold tabular-nums ${tier.grand && (isFr || i18n.language.startsWith("en")) ? "max-sm:text-right" : ""}`}
-                    dir={tier.grand ? "auto" : undefined}
-                  >
-                    {tier.grand
-                      ? t("systems.ladderGrandJackpotLabel")
-                      : tier.lvl === 1
-                        ? t("systems.ladderStart")
-                        : `${t("systems.ladderLevel")} ${tier.lvl}`}
+                  <span className="font-bold tabular-nums">
+                    {tier.lvl === 1
+                      ? t("systems.ladderStart")
+                      : `${t("systems.ladderLevel")} ${tier.lvl}`}
                   </span>
                   <span className="text-xs font-semibold opacity-70 tabular-nums" dir="ltr">
                     {LADDER_XP[tier.lvl].toLocaleString("fr-FR").replace(/\u202f|,/g, " ")} {t("systems.ladderPts")}
