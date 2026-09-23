@@ -10,35 +10,25 @@ import stargateVideo from "@/assets/generated/hero-stargate-v2.mp4";
  * generated: the video *is* the Stargate animation.
  *
  * Layers: hero background (-z-20) → this video (-z-[19]) → all content.
+ *
+ * A single <video> element is used for both tablet and desktop (with the
+ * `object-position` shift handled purely via CSS breakpoints) instead of two
+ * separate elements pointing at the same source — two elements meant the
+ * browser fetched and decoded the same multi-MB clip twice simultaneously,
+ * which was the main cause of the animation stalling/crashing under load.
  */
 
-const VIDEO_LAYERS = [
-  // Tablet — mirrors the `data-hero-bg="tablet"` layer (background-position: center)
-  {
-    key: "tablet",
-    className: "hidden sm:block lg:hidden",
-    objectPosition: "center",
-  },
-  // Desktop — mirrors the `data-hero-bg="desktop"` layer (background-position: 62% center)
-  {
-    key: "desktop",
-    className: "hidden lg:block",
-    objectPosition: "62% center",
-  },
-] as const;
-
 const HeroStargateVideo = () => {
-  const refs = useRef<(HTMLVideoElement | null)[]>([]);
+  const ref = useRef<HTMLVideoElement | null>(null);
 
   // Autoplay is muted + inline, but Safari can still refuse the very first
   // attempt: retry on the first user gesture so the Stargate is always moving.
   useEffect(() => {
     const start = () => {
-      refs.current.forEach((el) => {
-        if (!el) return;
-        const p = el.play();
-        if (p && typeof p.catch === "function") p.catch(() => {});
-      });
+      const el = ref.current;
+      if (!el) return;
+      const p = el.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
     };
     start();
     document.addEventListener("touchstart", start, { passive: true, once: true });
@@ -50,29 +40,21 @@ const HeroStargateVideo = () => {
   }, []);
 
   return (
-    <>
-      {VIDEO_LAYERS.map((layer, i) => (
-        <video
-          key={layer.key}
-          ref={(el) => {
-            refs.current[i] = el;
-          }}
-          data-hero-stargate={layer.key}
-          aria-hidden="true"
-          src={stargateVideo}
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          disablePictureInPicture
-          controls={false}
-          tabIndex={-1}
-          className={`absolute inset-0 -z-[19] h-full w-full select-none pointer-events-none [@media(max-width:950px)_and_(max-height:600px)_and_(orientation:landscape)]:!hidden ${layer.className}`}
-          style={{ objectFit: "cover", objectPosition: layer.objectPosition }}
-        />
-      ))}
-    </>
+    <video
+      ref={ref}
+      data-hero-stargate="video"
+      aria-hidden="true"
+      src={stargateVideo}
+      autoPlay
+      loop
+      muted
+      playsInline
+      preload="auto"
+      disablePictureInPicture
+      controls={false}
+      tabIndex={-1}
+      className="hidden sm:block absolute inset-0 -z-[19] h-full w-full select-none pointer-events-none object-cover object-center lg:object-[62%_center] [@media(max-width:950px)_and_(max-height:600px)_and_(orientation:landscape)]:!hidden"
+    />
   );
 };
 

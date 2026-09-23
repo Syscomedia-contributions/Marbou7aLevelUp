@@ -70,15 +70,27 @@ const Layout = () => {
     try { video.load(); } catch { /* ignore */ }
     start();
 
+    // The page-wide gesture listeners below only exist to unblock autoplay
+    // during this initial window — once playback is confirmed stable, drop
+    // them (and the poll) instead of leaving them attached, and calling
+    // start(), for the rest of the visit.
+    const stopListening = () => {
+      window.clearInterval(interval);
+      window.clearTimeout(stopRetry);
+      document.removeEventListener("touchstart", start);
+      document.removeEventListener("click", start);
+      document.removeEventListener("scroll", start);
+    };
+
     const interval = window.setInterval(() => {
       if (cancelled) return;
       if (!video.paused && !video.ended && video.readyState >= 3) {
-        window.clearInterval(interval);
+        stopListening();
         return;
       }
       start();
     }, 200);
-    const stopRetry = window.setTimeout(() => window.clearInterval(interval), 8000);
+    const stopRetry = window.setTimeout(stopListening, 8000);
 
     const onVisibility = () => { if (document.visibilityState === "visible") start(); };
     video.addEventListener("loadeddata", start);
@@ -92,16 +104,12 @@ const Layout = () => {
 
     return () => {
       cancelled = true;
-      window.clearInterval(interval);
-      window.clearTimeout(stopRetry);
+      stopListening();
       video.removeEventListener("loadeddata", start);
       video.removeEventListener("canplay", start);
       video.removeEventListener("stalled", start);
       video.removeEventListener("suspend", start);
       document.removeEventListener("visibilitychange", onVisibility);
-      document.removeEventListener("touchstart", start);
-      document.removeEventListener("click", start);
-      document.removeEventListener("scroll", start);
     };
   }, [pathname]);
 
