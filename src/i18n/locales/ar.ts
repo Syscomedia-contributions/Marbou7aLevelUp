@@ -76,7 +76,7 @@ const ar = {
     description: "أجب عن الأسئلة، افتح المستويات وزد فرصك في الربح.",
     playNow: "إلعب الآن",
     howItWorks: "كيف يعمل؟",
-    heroTitle: "اختبر معلوماتك واربح <grad>حتى 25,000 دينار كاش</grad>",
+    heroTitle: "اختبر معلوماتك واربح <grad>حتى 10,000 دينار كاش</grad>",
     heroSubtitle: "تحدَّ أصدقاءك، افتح المستويات وتقدّم في عالم <b>MARBOU7A CASH</b>.",
     ctaStart: "ابدأ",
     ctaGameplay: "كيفية اللعب",
@@ -221,7 +221,7 @@ const ar = {
     ladderLevel: "المستوى",
     ladderStart: "🚀 بداية المغامرة",
     ladderGrandJackpot: "الجائزة الكبرى",
-    ladderGrandJackpotLabel: "🏆 الجائزة الكبرى – \u200E25 000 TND",
+    ladderGrandJackpotLabel: "🏆 الجائزة الكبرى – \u200E10 000 TND",
     ladderCurrent: "أنت هنا",
     ladderSafe: "المستوى الرئيسي",
     ladderPts: "نقطة",
@@ -233,7 +233,7 @@ const ar = {
     subtitle: "",
     items: {
       monthly: { title: "جائزة نقدية شهرية", desc: "10,000 دينار تونسي للفوز بها كل شهر لأفضل اللاعبين في التصنيف.", tag: "كل شهر" },
-      grand: { title: "الجاكبوت الكبير", desc: "جائزة أسطورية بقيمة 25,000 دينار تونسي للبطل المطلق MARBOU7A CASH في نهاية اللعبة.", tag: "الجائزة الكبرى" },
+      grand: { title: "الجاكبوت الكبير", desc: "جائزة أسطورية بقيمة 10,000 دينار تونسي للبطل المطلق MARBOU7A CASH في نهاية اللعبة.", tag: "الجائزة الكبرى" },
     },
   },
   faq: {

@@ -76,7 +76,7 @@ const fr = {
     description: "Répondez aux questions, débloquez des niveaux et augmentez vos chances de gagner.",
     playNow: "Jouer maintenant",
     howItWorks: "Comment ça marche ?",
-    heroTitle: "Teste tes connaissances et gagne <grad>jusqu'à 25 000 DT cash</grad>",
+    heroTitle: "Teste tes connaissances et gagne <grad>jusqu'à 10 000 DT cash</grad>",
     heroSubtitle: "Défiez vos amis, débloquez des niveaux et progressez dans l'univers <b>MARBOU7A CASH</b>.",
     ctaStart: "Commencer",
     ctaGameplay: "Comment jouer",
@@ -221,7 +221,7 @@ const fr = {
     ladderLevel: "Niveau",
     ladderStart: "🚀 Début de l'aventure",
     ladderGrandJackpot: "Grand Jackpot",
-    ladderGrandJackpotLabel: "🏆 Grand Jackpot – 25 000 TND",
+    ladderGrandJackpotLabel: "🏆 Grand Jackpot – 10 000 TND",
     ladderCurrent: "Tu es ici",
     ladderSafe: "Niveau clé",
     ladderPts: "pts",
@@ -233,7 +233,7 @@ const fr = {
     subtitle: "",
     items: {
       monthly: { title: "Prix Cash Mensuel", desc: "10 000 TND à gagner chaque mois pour les meilleurs joueurs du classement.", tag: "Chaque mois" },
-      grand: { title: "Grand Jackpot", desc: "Un prix légendaire de 25 000 TND pour le champion ultime MARBOU7A CASH à la fin du jeu.", tag: "Grand prix" },
+      grand: { title: "Grand Jackpot", desc: "Un prix légendaire de 10 000 TND pour le champion ultime MARBOU7A CASH à la fin du jeu.", tag: "Grand prix" },
     },
   },
   faq: {
