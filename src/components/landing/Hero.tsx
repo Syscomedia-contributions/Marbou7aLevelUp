@@ -169,7 +169,7 @@ const Hero = () => {
 
 
           {/* CTA card — mobile / tablet absolute positioning only */}
-          <div className="relative text-center max-sm:!mt-0 max-sm:absolute max-sm:inset-x-0 max-sm:top-[calc(100svh-310px)] [@media(max-width:639px)_and_(max-height:700px)]:top-[calc(100svh-255px)] [@media(max-width:639px)_and_(max-height:700px)]:scale-[0.82] [@media(max-width:639px)_and_(max-height:700px)]:origin-top md:max-lg:text-start lg:text-start md:max-w-xl md:mx-auto md:max-lg:mx-0 lg:max-w-none lg:hidden">
+          <div className="relative text-center max-sm:!mt-0 max-sm:absolute max-sm:inset-x-0 max-sm:top-[calc(100svh-310px)] [@media(max-width:639px)_and_(max-height:700px)]:top-[calc(100svh-255px)] [@media(max-width:639px)_and_(max-height:700px)]:scale-[0.82] [@media(max-width:639px)_and_(max-height:700px)]:origin-top md:max-lg:text-start lg:text-start md:max-w-xl md:mx-auto lg:max-w-none lg:hidden">
             <div className="relative max-sm:px-1 max-sm:py-2">
             <div className={`relative max-sm:[filter:drop-shadow(0_2px_3px_rgba(0,0,0,0.9))_drop-shadow(0_0_10px_rgba(0,0,0,0.6))] ${isAr ? "md:-ml-[20%]" : ""}`}>
               <h2 className={`text-base sm:text-2xl md:text-[1.2rem] lg:text-[1.7rem] font-bold leading-tight break-words max-sm:font-extrabold`}>

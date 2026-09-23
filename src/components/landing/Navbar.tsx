@@ -111,7 +111,7 @@ const Navbar = () => {
               alt="Tunisie Telecom"
               className="h-5 xs:h-7 sm:h-10 md:h-12 w-auto object-contain shrink-0 invisible -ml-0.5 sm:ml-0 max-sm:scale-[1.14] -translate-y-[35%]"
             />
-            <div dir="ltr" className={`flex flex-col items-center gap-0.5 font-bold min-w-0 pointer-events-none select-none max-sm:-translate-y-[11%] max-lg:hidden ${i18n.language === 'ar' ? ' sm:-translate-x-[37%] lg:translate-x-[calc(186%+24px)] lg:translate-y-[70%] lg:scale-[67%]' : i18n.language === 'en' ? ' sm:-translate-x-[39%] lg:translate-x-[405%] lg:translate-y-[70%] lg:scale-[135%]' : i18n.language === 'fr' ? ' sm:-translate-x-[41%] lg:translate-x-[calc(405%+20px)] lg:translate-y-[70%] lg:scale-[135%]' : ' sm:-translate-x-[37%]'}`} aria-label="Marbou7a Level Up">
+            <div dir="ltr" className={`flex flex-col items-center gap-0.5 font-bold min-w-0 pointer-events-none select-none max-sm:-translate-y-[11%] max-lg:hidden ${i18n.language === 'ar' ? ' sm:-translate-x-[37%] lg:translate-x-[calc(186%-60px)] lg:translate-y-[70%] lg:scale-[67%]' : i18n.language === 'en' ? ' sm:-translate-x-[39%] lg:translate-x-[calc(405%-60px)] lg:translate-y-[70%] lg:scale-[135%]' : i18n.language === 'fr' ? ' sm:-translate-x-[41%] lg:translate-x-[calc(405%-60px)] lg:translate-y-[70%] lg:scale-[135%]' : ' sm:-translate-x-[37%]'}`} aria-label="Marbou7a Level Up">
               <img
                 src={i18n.language === "ar" ? marbou7aWordmarkAr : marbou7aWordmark}
                 className="h-14 max-[360px]:h-11 xs:h-20 sm:h-20 md:h-24 lg:h-32 -my-1 xs:-my-2 sm:-my-6 w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]"
