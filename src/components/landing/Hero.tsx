@@ -9,6 +9,7 @@ import {
 import { Trans, useTranslation } from "react-i18next";
 import heroBgWide from "@/assets/hero-egypt-bg-wide.png";
 import heroBgTablet from "@/assets/hero-egypt-bg-tablet.png";
+import marbou7aWordmark from "@/assets/marbou7a-wordmark.png";
 import marbou7aWordmarkAr from "@/assets/marbou7a-wordmark-ar.png";
 import marbou7aWordmarkMobile from "@/assets/marbou7a-wordmark-mobile.png";
 
@@ -148,14 +149,22 @@ const Hero = () => {
           </h1>
 
 
-          {/* Desktop: phrase + login card stacked tightly under the logo */}
-          <div className="hidden lg:flex flex-col items-center relative lg:translate-y-12">
-            <div className="-translate-y-[30%]">
-              <TypewriterTitle
-                className={`${i18n.language === "fr" ? "text-base lg:!-translate-x-[1vw] lg:!text-center" : "text-[1.2rem] lg:!translate-x-[0vw] lg:!text-center"} sm:text-2xl md:text-2xl lg:text-[1.8rem] font-extrabold leading-[1.5] sm:leading-[1.15] break-words max-sm:text-white lg:w-full lg:text-center`}
-                speedMs={110}
+          {/* Desktop: logo, then the phrase directly underneath, then the login card */}
+          <div className="hidden lg:flex flex-col items-center relative lg:translate-y-6">
+            <div className="flex flex-col items-center select-none pointer-events-none mb-1">
+              <img
+                src={i18n.language === "ar" ? marbou7aWordmarkAr : marbou7aWordmark}
+                alt="Marbou7a"
+                className="h-24 xl:h-28 w-auto object-contain drop-shadow-[0_0_10px_hsl(var(--primary)/0.5)]"
               />
+              <span className="text-wordmark-gradient font-wordmark text-[22px] -mt-5 font-black tracking-[0.08em] uppercase leading-none">
+                CASH
+              </span>
             </div>
+            <TypewriterTitle
+              className={`${i18n.language === "fr" ? "text-base lg:!text-center" : "text-[1.2rem] lg:!text-center"} sm:text-2xl md:text-2xl lg:text-[1.8rem] font-extrabold leading-[1.5] sm:leading-[1.15] break-words max-sm:text-white lg:w-full lg:text-center`}
+              speedMs={110}
+            />
             <InlineLoginCard className="absolute top-full left-1/2 -translate-x-1/2 mt-2 lg:w-[400px] z-30" />
           </div>
 
